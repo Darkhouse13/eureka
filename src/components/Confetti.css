@@ -1,0 +1,2 @@
+.confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 55; }
+.confetti i { position: absolute; top: -14px; width: 9px; height: 14px; border-radius: 2px; }

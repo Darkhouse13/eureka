@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Eurêka — prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2A2342; --muted:#736C88; --line:#ECE8F5; --card:#FFFFFF;
+  --bg1:#ECEEFF; --bg2:#FFF6EC;
+  --blue:#2E6FD6; --blue-l:#E7F0FF; --blue-d:#194A96;
+  --purple:#6C5CE0; --purple-l:#EDEAFE; --purple-d:#3F2F9E;
+  --amber:#F0A92B; --amber-l:#FDEFD3; --amber-d:#946309;
+  --pink:#E45A92; --pink-l:#FCE6EF;
+  --teal:#15A98A; --teal-l:#DDF3EE;
+  --accent:var(--purple);
+  --font-display:'Fredoka', system-ui, sans-serif;
+  --font-body:'Nunito', system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--font-body);color:var(--ink);background:linear-gradient(165deg,var(--bg1),var(--bg2));-webkit-font-smoothing:antialiased}
+.stage{min-height:100dvh;display:flex;align-items:center;justify-content:center}
+.app{position:relative;width:100%;max-width:460px;height:100dvh;background:#fff;overflow:hidden;display:flex;flex-direction:column}
+@media(min-width:520px){
+  .stage{padding:24px}
+  .app{height:min(900px,calc(100dvh - 48px));border-radius:30px;box-shadow:0 30px 70px -22px rgba(42,35,66,.5)}
+}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;padding:22px 20px;overflow-y:auto;opacity:0;transform:translateX(14px);pointer-events:none;transition:opacity .34s ease, transform .34s ease}
+.screen.active{opacity:1;transform:none;pointer-events:auto}
+#home,#collection,#profil{padding-bottom:92px}
+.screen.loop{padding-top:80px}
+
+h1,h2,h3{font-family:var(--font-display);font-weight:600;margin:0}
+.title{font-size:40px;letter-spacing:.5px;color:var(--purple-d)}
+.h2{font-size:26px;line-height:1.15;margin-bottom:10px}
+.lead{font-size:17px;line-height:1.55;color:var(--muted);max-width:30ch}
+.body{font-size:16px;line-height:1.6;margin:0 0 16px}
+.body b{font-weight:700;color:var(--ink)}
+.small{font-size:14px}
+.muted{color:var(--muted)}
+.eyebrow{font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--blue);margin-bottom:6px;display:block}
+
+.btn{font-family:var(--font-display);font-weight:500;font-size:19px;border:none;border-radius:999px;padding:15px 26px;background:var(--accent);color:#fff;cursor:pointer;box-shadow:0 6px 0 rgba(0,0,0,.13);transition:transform .12s ease, box-shadow .12s ease}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 rgba(0,0,0,.13)}
+.btn-block{width:100%}
+.screen.loop .btn{--accent:var(--blue)}
+.field{font-family:var(--font-body);font-size:18px;width:100%;padding:14px 18px;border:2px solid var(--line);border-radius:16px;outline:none;background:#fff;color:var(--ink)}
+.field:focus{border-color:var(--purple)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+button:focus-visible{outline-offset:3px;border-radius:999px}
+.link{background:none;border:none;color:var(--blue);font-family:var(--font-body);font-weight:700;font-size:15px;cursor:pointer;padding:4px 0;text-decoration:underline}
+
+.center-col{margin:auto;display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;width:100%;max-width:340px}
+
+.fox-xl{width:128px;height:128px}
+.fox-lg{width:96px;height:96px}
+.fox-md{width:58px;height:58px;flex:none}
+.fox-xl svg,.fox-lg svg,.fox-md svg,.empty-fox svg{width:100%;height:100%;display:block}
+.bob{animation:bob 3s ease-in-out infinite}
+.eye{transform-box:fill-box;transform-origin:center;animation:blink 4.6s ease-in-out infinite}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.brand{font-family:var(--font-display);font-weight:600;font-size:24px;color:var(--purple-d)}
+.merv{display:inline-flex;align-items:center;gap:6px;background:var(--amber-l);color:var(--amber-d);font-family:var(--font-display);font-weight:600;font-size:16px;padding:6px 14px;border-radius:999px}
+.merv svg{width:18px;height:18px}
+
+.bubble-row{display:flex;align-items:flex-start;gap:10px;margin-bottom:18px}
+.bubble{position:relative;background:#fff;border:2px solid var(--line);border-radius:18px;padding:12px 15px;font-size:16px;line-height:1.4;color:var(--ink);flex:1}
+.bubble::before{content:"";position:absolute;left:-7px;top:18px;width:12px;height:12px;background:#fff;border-left:2px solid var(--line);border-bottom:2px solid var(--line);transform:rotate(45deg)}
+
+.journey{display:flex;flex-direction:column;gap:6px;position:relative}
+.tile{display:flex;align-items:center;gap:14px;background:none;border:none;width:100%;text-align:left;padding:10px 8px;border-radius:18px;cursor:pointer;font-family:var(--font-body);transition:background .15s}
+.tile:hover{background:#FAF8FF}
+.tile.soon{opacity:.55}
+.tile-ic-wrap{position:relative;width:52px;height:52px;flex:none}
+.tile-ic{position:absolute;inset:0;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center}
+.tile-ic svg{width:26px;height:26px}
+.pulse-ring{position:absolute;inset:0;border-radius:50%;border:2.5px solid var(--blue);animation:pulse 2s ease-out infinite}
+.tile-text{display:flex;flex-direction:column;gap:3px;flex:1}
+.tile-name{font-family:var(--font-display);font-weight:500;font-size:18px;color:var(--ink)}
+.tile-status{font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:4px}
+.tile-status svg{width:15px;height:15px}
+.tile-status.play{color:var(--blue)}
+.tile-status.done{color:var(--teal)}
+.tile-status.soon{color:var(--muted);font-weight:600}
+.tile-arrow{color:var(--muted)}
+.tile-arrow svg{width:22px;height:22px;display:block}
+
+.bottomnav{position:absolute;left:0;right:0;bottom:0;height:74px;background:#fff;border-top:1.5px solid var(--line);display:flex;align-items:center;justify-content:space-around;z-index:40;padding-bottom:env(safe-area-inset-bottom)}
+.navbtn{background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;font-family:var(--font-display);font-weight:500;font-size:12px;color:var(--muted);cursor:pointer;padding:6px 14px;border-radius:14px}
+.navbtn svg{width:24px;height:24px}
+.navbtn.active{color:var(--purple)}
+
+.loopbar{position:absolute;left:0;right:0;top:0;height:64px;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border-bottom:1.5px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:40}
+.iconbtn{width:42px;height:42px;border-radius:50%;border:none;background:#F2EFFA;color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.iconbtn.ghost{background:none;cursor:default}
+.iconbtn svg{width:22px;height:22px}
+.lb-center{display:flex;flex-direction:column;align-items:center;gap:5px}
+.lb-title{font-family:var(--font-display);font-weight:500;font-size:16px;color:var(--ink)}
+.lb-dots{display:flex;gap:6px}
+.dot{width:7px;height:7px;border-radius:50%;background:#D8D2E8}
+.dot.done{background:var(--blue)}
+.dot.active{background:var(--blue);width:18px;border-radius:5px}
+
+.loop-content{display:flex;flex-direction:column}
+.secret-strip{font-family:var(--font-display);font-weight:500;letter-spacing:4px;font-size:20px;color:var(--blue-d);background:var(--blue-l);border:2px dashed var(--blue);border-radius:14px;padding:16px;text-align:center;margin:6px 0 16px;word-break:break-word}
+
+.map-demo{background:var(--blue-l);border-radius:18px;padding:16px 14px;margin:4px 0 14px;text-align:center}
+.demo-row{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}
+.demo-arrows{color:var(--blue);font-size:18px;margin:8px 0;font-weight:700}
+.chip{font-family:var(--font-display);font-weight:500;width:30px;height:34px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:#fff;color:var(--muted);border:1.5px solid #D8E4F7}
+.chip.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.dial-mini{display:flex;align-items:center;gap:12px;justify-content:center;margin:8px 0 12px;font-family:var(--font-display);font-weight:500;color:var(--ink)}
+.dial-mini input[type=range]{flex:1;max-width:160px}
+.dial-num{min-width:26px;text-align:center;font-size:20px;color:var(--blue-d)}
+.example-line{font-family:var(--font-display);font-weight:500;font-size:19px;text-align:center;margin-bottom:16px}
+.word-out{color:var(--blue);background:var(--blue-l);padding:3px 12px;border-radius:10px;letter-spacing:3px}
+
+.decoder{margin:8px 0 18px}
+.msg{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;background:#F7F5FC;border-radius:18px;padding:18px 14px;min-height:90px;align-content:center}
+.msg.solved .ltile{background:var(--teal);color:#fff;border-color:var(--teal)}
+.ltile{font-family:var(--font-display);font-weight:500;width:30px;height:38px;border-radius:9px;display:inline-flex;align-items:center;justify-content:center;background:#fff;border:1.5px solid var(--line);color:var(--ink);font-size:19px;transition:background .25s, color .25s}
+.sp{width:14px}
+.dial{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:14px}
+.dial-btn{width:54px;height:54px;border-radius:50%;border:none;background:var(--blue-l);color:var(--blue-d);font-size:30px;font-family:var(--font-display);cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1}
+.dial-btn:active{transform:scale(.94)}
+.dial-btn:disabled{opacity:.4;cursor:default}
+.dial-core{display:flex;flex-direction:column;align-items:center;min-width:96px}
+.dial-label{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);font-weight:700}
+.dial-value{font-family:var(--font-display);font-weight:600;font-size:42px;color:var(--blue-d);line-height:1}
+.dial-range{width:100%;margin-bottom:8px}
+.dial-range:disabled{opacity:.4}
+.hint-row{text-align:center;margin-bottom:8px}
+.hint-text{display:block;font-size:14px;color:var(--muted);margin-top:6px;line-height:1.4}
+.solved-box{text-align:center;background:var(--teal-l);border-radius:20px;padding:18px;margin-top:6px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.solved-box .fox-md{width:64px;height:64px}
+.solved-msg{font-family:var(--font-display);font-weight:600;font-size:21px;color:#0C6B56;margin:0}
+
+.merveille-card{border-radius:22px;overflow:hidden;border:2px solid var(--line);background:#fff;margin:4px 0 18px;transform:scale(.6);opacity:0}
+.merveille-card.pop{animation:pop .55s cubic-bezier(.2,1.3,.4,1) forwards}
+.mc-top{background:var(--blue);color:#fff;position:relative;padding:26px 0;text-align:center}
+.mc-rarity{position:absolute;top:12px;right:14px;background:rgba(255,255,255,.25);font-family:var(--font-display);font-weight:500;font-size:13px;padding:4px 12px;border-radius:999px}
+.mc-sym{font-family:var(--font-display);font-weight:600;font-size:46px;letter-spacing:2px}
+.mc-body{padding:16px 18px}
+.mc-title{font-size:23px;margin-bottom:6px}
+.mc-fact{font-size:15px;line-height:1.5;color:var(--muted);margin:0}
+.door{background:var(--purple-l);border-radius:18px;padding:16px;margin-bottom:18px}
+.door .body{margin:0}
+.door .body b{color:var(--purple-d)}
+
+.cards-grid{display:flex;flex-direction:column;gap:14px}
+.empty{margin:auto;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px;padding-top:30px}
+.empty-fox{width:90px;height:90px;opacity:.85}
+.mini-card{display:flex;border-radius:18px;overflow:hidden;border:2px solid var(--line);background:#fff}
+.mini-top{background:var(--blue);color:#fff;width:96px;flex:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:12px 6px}
+.mini-rar{font-family:var(--font-display);font-weight:500;font-size:12px;background:rgba(255,255,255,.22);padding:2px 9px;border-radius:999px}
+.mini-sym{font-family:var(--font-display);font-weight:600;font-size:28px}
+.mini-body{padding:12px 14px}
+.mini-title{font-family:var(--font-display);font-weight:500;font-size:18px;margin-bottom:4px}
+.mini-fact{font-size:14px;color:var(--muted);line-height:1.4}
+
+.profil-card{margin-top:6px;background:#fff;border:2px solid var(--line);border-radius:22px;padding:22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:6px}
+.profil-card p{margin:4px 0;font-size:16px}
+.stat{font-size:16px;background:var(--purple-l);color:var(--purple-d);padding:8px 16px;border-radius:999px;font-weight:700}
+
+.confetti{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:55}
+.confetti i{position:absolute;top:-14px;width:9px;height:14px;border-radius:2px}
+.toast{position:absolute;left:50%;bottom:98px;transform:translateX(-50%) translateY(12px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:999px;font-size:14px;font-weight:700;opacity:0;transition:.25s ease;z-index:70;max-width:80%;text-align:center;box-shadow:0 10px 24px rgba(0,0,0,.22)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(.15)}}
+@keyframes pulse{0%{transform:scale(.82);opacity:.55}100%{transform:scale(1.55);opacity:0}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.04)}100%{transform:scale(1);opacity:1}}
+@keyframes fall{to{transform:translateY(105vh) rotate(560deg)}}
+@media(prefers-reduced-motion:reduce){
+  .bob,.eye,.pulse-ring,.confetti i{animation:none!important}
+  .merveille-card.pop{animation:none;transform:none;opacity:1}
+  .screen{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="app" id="app">
+    <div class="confetti" id="confetti" aria-hidden="true"></div>
+
+    <div class="loopbar" id="loopbar" hidden>
+      <button class="iconbtn" id="loopBack" aria-label="Retour"></button>
+      <div class="lb-center"><span class="lb-title">Les codes secrets</span><span class="lb-dots" id="lbDots"></span></div>
+      <span class="iconbtn ghost" aria-hidden="true"></span>
+    </div>
+
+    <section class="screen active" id="welcome">
+      <div class="center-col">
+        <div class="fox-xl bob" id="welcomeFox"></div>
+        <h1 class="title">Eurêka</h1>
+        <p class="lead">Salut ! Moi, c'est ton guide pour explorer les maths comme un monde à découvrir. Comment veux-tu m'appeler ?</p>
+        <input id="foxNameInput" class="field" type="text" maxlength="14" placeholder="Filou" autocomplete="off" aria-label="Le nom de ton guide">
+        <button class="btn btn-block" id="startBtn">C'est parti !</button>
+      </div>
+    </section>
+
+    <section class="screen" id="home">
+      <header class="topbar">
+        <span class="brand">Eurêka</span>
+        <span class="merv"><span id="mervStar"></span><span id="mervCount">0</span></span>
+      </header>
+      <div class="bubble-row">
+        <div class="fox-md bob" id="homeFox"></div>
+        <div class="bubble" id="homeBubble">Salut ! On commence par les codes secrets ?</div>
+      </div>
+      <div class="journey" id="journey"></div>
+    </section>
+
+    <section class="screen" id="collection">
+      <header class="topbar">
+        <span class="brand">Mes merveilles</span>
+        <span class="merv"><span id="mervStarC"></span><span id="mervCountC">0</span></span>
+      </header>
+      <div class="cards-grid" id="cardsGrid"></div>
+    </section>
+
+    <section class="screen" id="profil">
+      <header class="topbar"><span class="brand">Profil</span></header>
+      <div class="profil-card">
+        <div class="fox-lg bob"></div>
+        <p>Ton guide : <b id="foxNameOut">Filou</b></p>
+        <div class="stat">Merveilles trouvées : <b id="mervCount2">0</b></div>
+        <div class="stat">Mondes terminés : <b id="worldsDone">0</b></div>
+        <p class="muted small">Plus tu explores, plus le monde s'agrandit.</p>
+      </div>
+    </section>
+
+    <section class="screen loop" id="etincelle">
+      <div class="loop-content">
+        <span class="eyebrow">L'étincelle</span>
+        <h2 class="h2">Le secret de Jules César</h2>
+        <p class="body">Il y a 2000 ans, l'empereur Jules César envoyait des ordres secrets à son armée. Si un messager était capturé, l'ennemi tombait sur ça :</p>
+        <div class="secret-strip" id="secretStrip"></div>
+        <p class="body">Impossible à lire... sauf si on connaît l'astuce. Aujourd'hui, c'est toi qui vas la casser.</p>
+        <button class="btn btn-block" data-go="idee">Montre-moi l'astuce</button>
+      </div>
+    </section>
+
+    <section class="screen loop" id="idee">
+      <div class="loop-content">
+        <span class="eyebrow">L'idée</span>
+        <h2 class="h2">Décale les lettres</h2>
+        <p class="body">L'astuce de César : décaler chaque lettre dans l'alphabet. Bouge le décalage et regarde les lettres changer.</p>
+        <div class="map-demo">
+          <div class="demo-row" id="demoTop"></div>
+          <div class="demo-arrows">↓ ↓ ↓</div>
+          <div class="demo-row" id="demoBot"></div>
+          <div class="dial-mini"><span>Décalage</span><input type="range" id="demoShift" min="0" max="6" value="3" aria-label="Décalage de démonstration"><span class="dial-num" id="demoShiftNum">3</span></div>
+          <div class="example-line">CHAT devient <span id="demoWord" class="word-out">FKDW</span></div>
+        </div>
+        <p class="body small">Et quand on dépasse Z ? On revient au début : ...X, Y, Z, A, B, C... exactement comme une horloge.</p>
+        <button class="btn btn-block" data-go="jeu">J'ai compris, à moi de jouer</button>
+      </div>
+    </section>
+
+    <section class="screen loop" id="jeu">
+      <div class="loop-content">
+        <span class="eyebrow">Le jeu</span>
+        <h2 class="h2">Casse le code</h2>
+        <p class="body">Voici le message intercepté. Tourne le décalage jusqu'à ce qu'il veuille dire quelque chose.</p>
+        <div class="decoder"><div class="msg" id="msg"></div></div>
+        <div class="dial">
+          <button class="dial-btn" id="dialMinus" aria-label="Diminuer le décalage">−</button>
+          <div class="dial-core"><span class="dial-label">Décalage</span><span class="dial-value" id="dialValue">0</span></div>
+          <button class="dial-btn" id="dialPlus" aria-label="Augmenter le décalage">+</button>
+        </div>
+        <input type="range" id="dialRange" class="dial-range" min="0" max="25" value="0" aria-label="Décalage">
+        <div class="hint-row"><button class="link" id="hintBtn">Besoin d'un indice ?</button><span class="hint-text" id="hintText" hidden>Tourne jusqu'à voir apparaître des mots français. Le bon nombre est entre 5 et 10.</span></div>
+        <div class="solved-box" id="solvedBox" hidden>
+          <div class="fox-md" id="jeuFox"></div>
+          <p class="solved-msg">Tu l'as cassé ! Bravo.</p>
+          <button class="btn btn-block" data-go="decouverte">Continuer</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="screen loop" id="decouverte">
+      <div class="loop-content">
+        <span class="eyebrow">La découverte</span>
+        <h2 class="h2">Une merveille pour toi !</h2>
+        <div class="merveille-card" id="wonderCard">
+          <div class="mc-top"><span class="mc-rarity">Rare</span><span class="mc-sym">A→D</span></div>
+          <div class="mc-body">
+            <h3 class="mc-title">Le chiffre de César</h3>
+            <p class="mc-fact">Le tout premier code secret de l'Histoire. Tout simple... et pourtant il a protégé un empire entier.</p>
+          </div>
+        </div>
+        <div class="door"><p class="body"><b>Et le monde s'agrandit :</b> aujourd'hui, des codes des milliards de fois plus puissants protègent tous tes messages et tes jeux. Le plus fou ? Ils sont fabriqués avec d'immenses <b>nombres premiers</b>... et ça, c'est un autre monde qui t'attend.</p></div>
+        <button class="btn btn-block" id="claimBtn">Ajouter à ma collection</button>
+      </div>
+    </section>
+
+    <nav class="bottomnav" id="nav" hidden>
+      <button class="navbtn" data-nav="home"><span class="ni-map"></span>Carte</button>
+      <button class="navbtn" data-nav="collection"><span class="ni-star"></span>Merveilles</button>
+      <button class="navbtn" data-nav="profil"><span class="ni-user"></span>Profil</button>
+    </nav>
+  </div>
+</div>
+
+<script>
+const ICONS={
+  lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2.2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  infinity:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5c-2.2 0-3.5 1.6-3.5 3.5S3.8 15.5 6 15.5c3.4 0 4.6-7 8-7 2.2 0 3.5 1.6 3.5 3.5S16.2 15.5 14 15.5c-3.4 0-4.6-7-8-7z"/></svg>',
+  pattern:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/></svg>',
+  dice:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="3.2"/><circle cx="9" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1.3" fill="currentColor" stroke="none"/><circle cx="9" cy="15" r="1.3" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r="1.3" fill="currentColor" stroke="none"/></svg>',
+  cube:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5"/><path d="M12 12v9"/></svg>',
+  star:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 3l2.6 5.4 5.9.9-4.3 4.1 1 5.9L12 16.6 6.8 19.3l1-5.9L3.5 9.3l5.9-.9z"/></svg>',
+  map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 4 4 6v14l5-2 6 2 5-2V4l-5 2-6-2z"/><path d="M9 4v14M15 6v14"/></svg>',
+  user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.2 4-6 8-6s8 1.8 8 6"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L19 7"/></svg>',
+  play:'<svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5v14l11-7z"/></svg>',
+  lockSmall:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2.2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',
+  back:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>'
+};
+
+const WORLDS=[
+  {id:'codes',name:'Les codes secrets',icon:ICONS.lock,c:'blue'},
+  {id:'infinity',name:'Les nombres sans fin',icon:ICONS.infinity,c:'purple'},
+  {id:'motifs',name:'Le monde des motifs',icon:ICONS.pattern,c:'pink'},
+  {id:'hasard',name:'Le grand hasard',icon:ICONS.dice,c:'amber'},
+  {id:'formes',name:'Les formes impossibles',icon:ICONS.cube,c:'teal'}
+];
+const COLORS={
+  blue:{l:'var(--blue-l)',d:'var(--blue-d)',m:'var(--blue)'},
+  purple:{l:'var(--purple-l)',d:'var(--purple-d)',m:'var(--purple)'},
+  pink:{l:'var(--pink-l)',d:'#A02659',m:'var(--pink)'},
+  amber:{l:'var(--amber-l)',d:'var(--amber-d)',m:'var(--amber)'},
+  teal:{l:'var(--teal-l)',d:'#0C6B56',m:'var(--teal)'}
+};
+const CARDS={cesar:{title:'Le chiffre de César',sym:'A→D',fact:"Le tout premier code secret de l'Histoire.",rarity:'Rare'}};
+
+const state={foxName:'Filou',merveilles:[],worlds:{codes:'play',infinity:'soon',motifs:'soon',hasard:'soon',formes:'soon'}};
+let currentScreen='welcome';
+let currentDial=0;
+let jeuSolved=false;
+
+function fox(mood){
+  const happy=mood==='happy';
+  const eyes=happy
+    ? '<path d="M13 23 q2 -2.4 4 0" fill="none" stroke="#3B2A18" stroke-width="1.8" stroke-linecap="round"/><path d="M23 23 q2 -2.4 4 0" fill="none" stroke="#3B2A18" stroke-width="1.8" stroke-linecap="round"/>'
+    : '<circle class="eye" cx="15.5" cy="22" r="1.7" fill="#3B2A18"/><circle class="eye" cx="24.5" cy="22" r="1.7" fill="#3B2A18"/>';
+  const smile=happy?'<path d="M16.5 28 q3.5 3 7 0" fill="none" stroke="#3B2A18" stroke-width="1.6" stroke-linecap="round"/>':'';
+  const blush=happy?'<ellipse cx="12.3" cy="27" rx="2.2" ry="1.3" fill="#F2A9B8" opacity=".85"/><ellipse cx="27.7" cy="27" rx="2.2" ry="1.3" fill="#F2A9B8" opacity=".85"/>':'';
+  return '<svg viewBox="0 0 40 40" role="img" aria-label="Renard guide">'
+    +'<polygon points="7,3 17,17 5,16" fill="#DBA45E"/><polygon points="33,3 35,16 23,17" fill="#DBA45E"/>'
+    +'<polygon points="9,7 15,15 8,15" fill="#F4DFBE"/><polygon points="31,7 32,15 25,15" fill="#F4DFBE"/>'
+    +'<circle cx="20" cy="23" r="12" fill="#EBC591"/><ellipse cx="20" cy="27" rx="7.6" ry="5.6" fill="#F7E7CB"/>'
+    +blush+eyes+'<circle cx="20" cy="26" r="1.7" fill="#3B2A18"/>'+smile+'</svg>';
+}
+
+function shiftChar(ch,n){
+  if(ch<'A'||ch>'Z')return ch;
+  return String.fromCharCode(65+((ch.charCodeAt(0)-65+n+260)%26));
+}
+function caesar(str,n){return str.split('').map(c=>shiftChar(c,n)).join('');}
+const PLAIN='BIENVENUE DANS UN MONDE PLUS GRAND';
+const KEY=7;
+const ENC=caesar(PLAIN,KEY);
+
+function show(id){
+  currentScreen=id;
+  document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id===id));
+  const loop=['etincelle','idee','jeu','decouverte'].includes(id);
+  const navScreens=['home','collection','profil'].includes(id);
+  document.getElementById('nav').hidden=!navScreens;
+  document.getElementById('loopbar').hidden=!loop;
+  if(loop)updateLoopbar(id);
+  if(navScreens)setActiveNav(id);
+  if(id==='home')renderHome();
+  if(id==='collection')renderCollection();
+  if(id==='profil')renderProfil();
+  if(id==='idee')initIdee();
+  if(id==='jeu')initJeu();
+  if(id==='decouverte')initDecouverte();
+  const el=document.getElementById(id);if(el)el.scrollTop=0;
+}
+function setActiveNav(id){document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.nav===id));}
+function updateLoopbar(id){
+  const steps=['etincelle','idee','jeu','decouverte'];const idx=steps.indexOf(id);
+  const d=document.getElementById('lbDots');d.innerHTML='';
+  steps.forEach((s,i)=>{const dot=document.createElement('span');dot.className='dot'+(i===idx?' active':'')+(i<idx?' done':'');d.appendChild(dot);});
+}
+function loopBack(){const map={etincelle:'home',idee:'etincelle',jeu:'idee',decouverte:'home'};show(map[currentScreen]||'home');}
+
+function renderHome(){
+  document.getElementById('mervCount').textContent=state.merveilles.length;
+  document.getElementById('homeFox').innerHTML=fox();
+  document.getElementById('homeBubble').textContent = state.worlds.codes==='done'
+    ? 'Superbe ! Tu as trouvé ta première merveille. La suite arrive très bientôt.'
+    : 'Salut ! On commence par les codes secrets ?';
+  renderJourney();
+}
+function renderJourney(){
+  const j=document.getElementById('journey');j.innerHTML='';
+  WORLDS.forEach(w=>{
+    const st=state.worlds[w.id];const col=COLORS[w.c];
+    const playable=st==='play';const done=st==='done';
+    const status=done?'<span class="tile-status done">'+ICONS.check+' Terminé</span>'
+      :playable?'<span class="tile-status play">Commence ici</span>'
+      :'<span class="tile-status soon">Bientôt</span>';
+    const ring=playable?'<span class="pulse-ring" style="border-color:'+col.m+'"></span>':'';
+    const arrow=done?'':playable?ICONS.play:ICONS.lockSmall;
+    const btn=document.createElement('button');
+    btn.className='tile'+(st==='soon'?' soon':'');
+    btn.innerHTML='<span class="tile-ic-wrap">'+ring+'<span class="tile-ic" style="background:'+col.l+';color:'+col.d+';border-color:'+col.m+'">'+w.icon+'</span></span>'
+      +'<span class="tile-text"><span class="tile-name">'+w.name+'</span>'+status+'</span>'
+      +'<span class="tile-arrow">'+arrow+'</span>';
+    btn.addEventListener('click',()=>onWorld(w.id));
+    j.appendChild(btn);
+  });
+}
+function onWorld(id){
+  if(id==='codes'){show('etincelle');return;}
+  toast('Ce monde arrive très bientôt !');
+}
+
+function renderCollection(){
+  document.getElementById('mervCountC').textContent=state.merveilles.length;
+  const g=document.getElementById('cardsGrid');g.innerHTML='';
+  if(state.merveilles.length===0){
+    g.innerHTML='<div class="empty"><div class="empty-fox bob"></div><p style="font-family:var(--font-display);font-weight:500;font-size:19px;margin:0">Pas encore de merveille</p><p class="muted small" style="margin:0">Joue à un monde pour gagner ta première carte !</p></div>';
+    const f=g.querySelector('.empty-fox');if(f)f.innerHTML=fox();return;
+  }
+  state.merveilles.forEach(id=>{
+    const c=CARDS[id];const el=document.createElement('div');el.className='mini-card';
+    el.innerHTML='<div class="mini-top"><span class="mini-rar">'+c.rarity+'</span><span class="mini-sym">'+c.sym+'</span></div>'
+      +'<div class="mini-body"><div class="mini-title">'+c.title+'</div><div class="mini-fact">'+c.fact+'</div></div>';
+    g.appendChild(el);
+  });
+}
+function renderProfil(){
+  document.getElementById('foxNameOut').textContent=state.foxName;
+  document.getElementById('mervCount2').textContent=state.merveilles.length;
+  document.getElementById('worldsDone').textContent=Object.values(state.worlds).filter(s=>s==='done').length;
+  document.querySelector('#profil .fox-lg').innerHTML=fox();
+}
+
+function initIdee(){
+  const top=document.getElementById('demoTop');
+  if(!top.dataset.built){for(let i=0;i<8;i++){const c=document.createElement('span');c.className='chip';c.textContent=String.fromCharCode(65+i);top.appendChild(c);}top.dataset.built='1';}
+  renderDemo();
+}
+function renderDemo(){
+  const s=parseInt(document.getElementById('demoShift').value,10);
+  document.getElementById('demoShiftNum').textContent=s;
+  const bot=document.getElementById('demoBot');bot.innerHTML='';
+  for(let i=0;i<8;i++){const c=document.createElement('span');c.className='chip on';c.textContent=String.fromCharCode(65+((i+s)%26));bot.appendChild(c);}
+  document.getElementById('demoWord').textContent=caesar('CHAT',s);
+}
+
+function decodedNow(){return caesar(ENC,-currentDial);}
+function renderMsg(){
+  const dec=decodedNow();const m=document.getElementById('msg');m.innerHTML='';
+  for(const ch of dec){
+    if(ch===' '){const s=document.createElement('span');s.className='sp';m.appendChild(s);}
+    else{const t=document.createElement('span');t.className='ltile';t.textContent=ch;m.appendChild(t);}
+  }
+  if(!jeuSolved&&dec===PLAIN)solveJeu();
+}
+function setDial(v){
+  if(jeuSolved)return;
+  currentDial=Math.max(0,Math.min(25,v));
+  document.getElementById('dialValue').textContent=currentDial;
+  document.getElementById('dialRange').value=currentDial;
+  renderMsg();
+}
+function solveJeu(){
+  jeuSolved=true;
+  document.getElementById('msg').classList.add('solved');
+  document.getElementById('solvedBox').hidden=false;
+  document.getElementById('jeuFox').innerHTML=fox('happy');
+  document.getElementById('dialMinus').disabled=true;
+  document.getElementById('dialPlus').disabled=true;
+  document.getElementById('dialRange').disabled=true;
+  confetti();
+}
+function initJeu(){
+  jeuSolved=false;currentDial=0;
+  document.getElementById('msg').classList.remove('solved');
+  document.getElementById('solvedBox').hidden=true;
+  document.getElementById('dialMinus').disabled=false;
+  document.getElementById('dialPlus').disabled=false;
+  document.getElementById('dialRange').disabled=false;
+  document.getElementById('dialRange').value=0;
+  document.getElementById('dialValue').textContent='0';
+  document.getElementById('hintText').hidden=true;
+  renderMsg();
+}
+function initDecouverte(){
+  const card=document.getElementById('wonderCard');
+  card.classList.remove('pop');void card.offsetWidth;card.classList.add('pop');
+  setTimeout(confetti,160);
+}
+function claim(){
+  if(!state.merveilles.includes('cesar'))state.merveilles.push('cesar');
+  state.worlds.codes='done';
+  show('home');
+  toast('Merveille ajoutée à ta collection !');
+}
+
+function confetti(){
+  const c=document.getElementById('confetti');
+  const cols=['#6C5CE0','#2E6FD6','#F0A92B','#E45A92','#15A98A'];
+  for(let i=0;i<36;i++){
+    const p=document.createElement('i');
+    p.style.left=Math.random()*100+'%';
+    p.style.background=cols[i%cols.length];
+    const dur=1.6+Math.random()*1.3;
+    p.style.animation='fall '+dur+'s linear '+(Math.random()*0.25)+'s forwards';
+    p.style.transform='rotate('+Math.random()*360+'deg)';
+    c.appendChild(p);
+    setTimeout(()=>p.remove(),(dur+0.5)*1000);
+  }
+}
+function toast(msg){
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.getElementById('app').appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('show'));
+  setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.remove(),300);},1900);
+}
+function start(){const v=document.getElementById('foxNameInput').value.trim();state.foxName=v||'Filou';show('home');}
+
+document.getElementById('welcomeFox').innerHTML=fox();
+document.getElementById('secretStrip').textContent=ENC;
+document.getElementById('mervStar').innerHTML=ICONS.star;
+document.getElementById('mervStarC').innerHTML=ICONS.star;
+document.getElementById('loopBack').innerHTML=ICONS.back;
+document.querySelector('[data-nav="home"] .ni-map').innerHTML=ICONS.map;
+document.querySelector('[data-nav="collection"] .ni-star').innerHTML=ICONS.star;
+document.querySelector('[data-nav="profil"] .ni-user').innerHTML=ICONS.user;
+
+document.getElementById('startBtn').addEventListener('click',start);
+document.getElementById('foxNameInput').addEventListener('keydown',e=>{if(e.key==='Enter')start();});
+document.getElementById('loopBack').addEventListener('click',loopBack);
+document.getElementById('claimBtn').addEventListener('click',claim);
+document.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));
+document.querySelectorAll('.navbtn').forEach(b=>b.addEventListener('click',()=>show(b.dataset.nav)));
+document.getElementById('demoShift').addEventListener('input',renderDemo);
+document.getElementById('dialMinus').addEventListener('click',()=>setDial(currentDial-1));
+document.getElementById('dialPlus').addEventListener('click',()=>setDial(currentDial+1));
+document.getElementById('dialRange').addEventListener('input',e=>setDial(parseInt(e.target.value,10)));
+document.getElementById('hintBtn').addEventListener('click',()=>{document.getElementById('hintText').hidden=false;});
+</script>
+</body>
+</html>

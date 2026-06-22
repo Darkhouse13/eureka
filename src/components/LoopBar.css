@@ -1,0 +1,22 @@
+.loopbar {
+  position: absolute; left: 0; right: 0; top: 0; height: 64px;
+  background: rgba(255, 255, 255, .92); backdrop-filter: blur(6px);
+  border-bottom: 1.5px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 14px; z-index: 40;
+}
+.iconbtn {
+  width: 42px; height: 42px; border-radius: 50%; border: none; background: #F2EFFA;
+  color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.iconbtn.ghost { background: none; cursor: default; }
+.iconbtn svg { width: 22px; height: 22px; }
+
+.lb-center { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.lb-title { font-family: var(--font-display); font-weight: 500; font-size: 16px; color: var(--ink); }
+.lb-dots { display: flex; gap: 6px; }
+
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #D8D2E8; }
+/* The loop colour (--loop-m) is set on the .world-loop wrapper per world. */
+.dot.done { background: var(--loop-m, var(--blue)); }
+.dot.active { background: var(--loop-m, var(--blue)); width: 18px; border-radius: 5px; }

@@ -1,0 +1,27 @@
+.journey { display: flex; flex-direction: column; gap: 6px; position: relative; }
+.tile {
+  display: flex; align-items: center; gap: 14px; background: none; border: none;
+  width: 100%; text-align: left; padding: 10px 8px; border-radius: 18px;
+  cursor: pointer; font-family: var(--font-body); transition: background .15s;
+}
+.tile:hover { background: #FAF8FF; }
+.tile.soon { opacity: .55; }
+
+.tile-ic-wrap { position: relative; width: 52px; height: 52px; flex: none; }
+.tile-ic {
+  position: absolute; inset: 0; border-radius: 50%; border: 2px solid;
+  display: flex; align-items: center; justify-content: center;
+}
+.tile-ic svg { width: 26px; height: 26px; }
+.pulse-ring { position: absolute; inset: 0; border-radius: 50%; border: 2.5px solid var(--blue); animation: pulse 2s ease-out infinite; }
+
+.tile-text { display: flex; flex-direction: column; gap: 3px; flex: 1; }
+.tile-name { font-family: var(--font-display); font-weight: 500; font-size: 18px; color: var(--ink); }
+.tile-status { font-size: 14px; font-weight: 700; display: inline-flex; align-items: center; gap: 4px; }
+.tile-status svg { width: 15px; height: 15px; }
+.tile-status.play { color: var(--blue); }
+.tile-status.done { color: var(--teal); }
+.tile-status.soon { color: var(--muted); font-weight: 600; }
+
+.tile-arrow { color: var(--muted); }
+.tile-arrow svg { width: 22px; height: 22px; display: block; }

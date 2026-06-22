@@ -1,0 +1,11 @@
+/* Fox sizes. The SVG always fills its box. bob/blink keyframes are global. */
+.fox-xl { width: 128px; height: 128px; }
+.fox-lg { width: 96px; height: 96px; }
+.fox-md { width: 58px; height: 58px; flex: none; }
+.fox-sm { width: 64px; height: 64px; }
+.fox-empty { width: 90px; height: 90px; opacity: .85; }
+
+.fox svg { width: 100%; height: 100%; display: block; }
+
+.bob { animation: bob 3s ease-in-out infinite; }
+.eye { transform-box: fill-box; transform-origin: center; animation: blink 4.6s ease-in-out infinite; }

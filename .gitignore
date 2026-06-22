@@ -1,0 +1,19 @@
+node_modules
+dist
+dist-ssr
+*.local
+.DS_Store
+.vite
+
+# Local env / secrets — never commit these
+.env
+.env.*
+!.env.example
+
+# Build logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Stray editor file
+New Text Document.txt

@@ -1,0 +1,5 @@
+.loop-content { display: flex; flex-direction: column; }
+
+/* The loop is themed with the world's colour: the eyebrow and the step buttons
+   pick it up (buttons via --accent set on .world-loop). */
+.world-loop .eyebrow { color: var(--loop-m); }

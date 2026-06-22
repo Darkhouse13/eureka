@@ -1,0 +1,98 @@
+/* Styles specific to "Le monde des motifs" — the mirror demo and the zellige
+   atelier. This world is themed pink, so it reads --pink-* directly.
+
+   Every selector is scoped under `.world-motifs` (the per-world root class the
+   engine sets on the loop) so nothing here can style the rest of the app. */
+
+/* L'idée demo wrapper */
+.world-motifs .mtf-demo {
+  background: var(--pink-l); border-radius: 18px;
+  padding: 18px 16px; margin: 4px 0 16px; text-align: center;
+}
+
+/* A soft "tile board" so the white/painted cells always read against a surface.
+   Full-width panel (like .mtf-demo): a flex child must NOT use margin:auto, which
+   would disable its stretch and collapse the square grid inside it. */
+.world-motifs .mtf-board {
+  background: var(--pink-l); border-radius: 18px;
+  padding: 16px; margin: 4px 0 16px;
+}
+
+/* The symmetry grid — shared by l'idée's demo and le jeu. The container is kept
+   square (aspect-ratio) with equal 1fr rows AND columns, so every cell is square
+   regardless of layout context. (Per-cell aspect-ratio collapses to zero height
+   when the grid's width isn't definite, e.g. as a flex child — this avoids that.) */
+.world-motifs .mtf-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-template-rows: repeat(var(--cols), 1fr);
+  gap: 4px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin: 0 auto;
+}
+.world-motifs .mtf-grid-demo { max-width: 240px; }
+
+.world-motifs .mtf-cell {
+  border: 1.5px solid #fff;
+  border-radius: 7px;
+  background: #fff;
+  padding: 0; min-width: 0; min-height: 0;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .18s ease, transform .12s ease;
+}
+.world-motifs .mtf-grid-demo .mtf-cell,
+.world-motifs .mtf-grid-game .mtf-cell { border-color: var(--pink-l); }
+.world-motifs .mtf-cell.lit { background: var(--pink); }
+.world-motifs .mtf-grid-game .mtf-cell:active { transform: scale(.92); }
+
+/* The mirror axes drawn over the grid. */
+.world-motifs .mtf-axis { position: absolute; background: var(--pink); opacity: .45; pointer-events: none; }
+.world-motifs .mtf-axis-v { top: -4px; bottom: -4px; left: 50%; width: 2px; transform: translateX(-50%); }
+.world-motifs .mtf-axis-h { left: -4px; right: -4px; top: 50%; height: 2px; transform: translateY(-50%); }
+
+.world-motifs .mtf-hint {
+  font-family: var(--font-display); font-weight: 500; font-size: 15px;
+  color: #A02659; margin: 14px 0 0; line-height: 1.4;
+}
+
+/* Le jeu — colour swatches. */
+.world-motifs .mtf-paints { display: flex; justify-content: center; gap: 14px; margin: 6px 0 18px; }
+.world-motifs .mtf-swatch {
+  width: 46px; height: 46px; border-radius: 50%; cursor: pointer;
+  background: var(--swatch); border: 3px solid #fff;
+  box-shadow: 0 0 0 2px var(--line);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.world-motifs .mtf-swatch.on { box-shadow: 0 0 0 3px var(--pink); transform: scale(1.08); }
+.world-motifs .mtf-swatch:active { transform: scale(.95); }
+
+/* Le jeu — status row. */
+.world-motifs .mtf-status { min-height: 26px; margin: 14px 0 4px; text-align: center; }
+.world-motifs .mtf-count {
+  font-family: var(--font-display); font-weight: 600; font-size: 16px;
+  color: #A02659; margin: 0;
+}
+
+/* Le jeu — the reveal after finishing. */
+.world-motifs .mtf-done {
+  text-align: center; background: var(--pink-l); border-radius: 20px; padding: 22px 18px;
+  margin-top: 6px; display: flex; flex-direction: column; align-items: center; gap: 14px;
+}
+.world-motifs .mtf-grid-final { width: 100%; max-width: 200px; pointer-events: none; }
+.world-motifs .mtf-grid-final .mtf-cell { border-color: #fff; }
+.world-motifs .mtf-done-msg {
+  font-family: var(--font-display); font-weight: 500; font-size: 18px;
+  line-height: 1.4; color: #A02659; margin: 0;
+}
+
+/* Reduced motion: no cell fade or press scaling — fills snap in instantly. */
+@media (prefers-reduced-motion: reduce) {
+  .world-motifs .mtf-cell,
+  .world-motifs .mtf-swatch { transition: none; }
+  .world-motifs .mtf-grid-game .mtf-cell:active,
+  .world-motifs .mtf-swatch:active,
+  .world-motifs .mtf-swatch.on { transform: none; }
+}

@@ -1,0 +1,90 @@
+/* Styles specific to "Les nombres sans fin" — the number line you can zoom into
+   forever. This world is themed purple, so it reads --purple-* directly (the
+   same way the codes world reads --blue-*). The .zooming class animates the
+   zoom; prefers-reduced-motion snaps instead, matching the engine's motion rule.
+
+   Every selector is scoped under `.world-infinity` (the per-world root class the
+   engine sets on the loop) so nothing here can style the rest of the app. The
+   disabled `.btn` state and `.btn-soft` pill that used to live here now live in
+   the shared button styles (src/styles/base.css), since every world needs them. */
+
+/* L'idée demo wrapper */
+.world-infinity .nl-demo {
+  background: var(--purple-l); border-radius: 18px;
+  padding: 16px 16px 18px; margin: 4px 0 16px; text-align: center;
+}
+
+/* The number line — shared by l'idée's demo and le jeu. */
+.world-infinity .numline {
+  position: relative; height: 60px; margin: 22px 0 6px;
+  touch-action: none; border-radius: 14px;
+}
+.world-infinity .numline.game { margin-top: 40px; cursor: pointer; } /* room for the value badge */
+
+.world-infinity .nl-rail {
+  position: absolute; left: 0; right: 0; top: 50%; height: 8px;
+  transform: translateY(-50%); background: #fff;
+  border: 2px solid var(--purple-l); border-radius: 999px;
+}
+.world-infinity .nl-demo .nl-rail { background: #fff; border-color: var(--purple); }
+
+.world-infinity .nl-fill {
+  position: absolute; top: 50%; height: 8px; transform: translateY(-50%);
+  background: var(--purple); border-radius: 999px; opacity: .9;
+}
+.world-infinity .nl-thumb {
+  position: absolute; top: 50%; width: 30px; height: 30px; border-radius: 50%;
+  transform: translate(-50%, -50%); background: var(--purple);
+  border: 4px solid #fff; box-shadow: 0 2px 8px rgba(63, 47, 158, .45);
+}
+.world-infinity .nl-dot {
+  position: absolute; top: 50%; width: 18px; height: 18px; border-radius: 50%;
+  transform: translate(-50%, -50%); background: var(--purple);
+  border: 3px solid #fff; box-shadow: 0 2px 6px rgba(63, 47, 158, .4);
+}
+.world-infinity .nl-value {
+  position: absolute; top: -8px; transform: translate(-50%, -100%);
+  background: var(--purple); color: #fff; white-space: nowrap;
+  font-family: var(--font-display); font-weight: 500; font-size: 17px;
+  padding: 4px 11px; border-radius: 11px;
+}
+.world-infinity .nl-value::after {
+  content: ""; position: absolute; left: 50%; bottom: -4px; width: 10px; height: 10px;
+  background: var(--purple); transform: translateX(-50%) rotate(45deg);
+}
+.world-infinity .nl-ends {
+  display: flex; justify-content: space-between; padding: 0 2px;
+  font-family: var(--font-display); font-weight: 500; font-size: 19px; color: var(--purple-d);
+}
+.world-infinity .nl-note { font-family: var(--font-display); font-weight: 500; font-size: 16px; color: var(--purple-d); margin: 14px 0 0; }
+
+/* The zoom: positions animate only while .zooming, so dragging stays instant.
+   Reduced motion snaps (positions jump straight to the zoomed-in interval). */
+.world-infinity .numline.zooming .nl-fill,
+.world-infinity .numline.zooming .nl-thumb,
+.world-infinity .numline.zooming .nl-dot,
+.world-infinity .numline.zooming .nl-value {
+  transition: left .56s cubic-bezier(.4, 0, .2, 1), right .56s cubic-bezier(.4, 0, .2, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .world-infinity .numline.zooming .nl-fill,
+  .world-infinity .numline.zooming .nl-thumb,
+  .world-infinity .numline.zooming .nl-dot,
+  .world-infinity .numline.zooming .nl-value { transition: none; }
+}
+
+/* Le jeu — status row (encouraging micro-copy + depth indicator). */
+.world-infinity .zoom-status { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 6px 0 0; min-height: 28px; }
+.world-infinity .zoom-micro { font-family: var(--font-display); font-weight: 500; font-size: 17px; color: var(--purple-d); margin: 0; }
+.world-infinity .zoom-depth {
+  flex: none; font-family: var(--font-display); font-weight: 600; font-size: 14px;
+  color: var(--purple-d); background: var(--purple-l); padding: 5px 12px; border-radius: 999px;
+}
+.world-infinity .zoom-actions { margin-top: 16px; }
+
+/* Le jeu — the reveal after the final zoom. */
+.world-infinity .zoom-done {
+  text-align: center; background: var(--purple-l); border-radius: 20px; padding: 22px 18px;
+  margin-top: 6px; display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.world-infinity .zoom-done-msg { font-family: var(--font-display); font-weight: 500; font-size: 19px; line-height: 1.4; color: var(--purple-d); margin: 0; }

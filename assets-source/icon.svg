@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Eurêka">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7A6BEA"/>
+      <stop offset="1" stop-color="#3F2F9E"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="36%" r="62%">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#glow)"/>
+
+  <!-- l'étincelle -->
+  <g transform="translate(228,56) scale(2.3)" fill="#F6C25A">
+    <path d="M12 3l2.6 5.4 5.9.9-4.3 4.1 1 5.9L12 16.6 6.8 19.3l1-5.9L3.5 9.3l5.9-.9z"/>
+  </g>
+
+  <!-- le renard guide -->
+  <g transform="translate(116,150) scale(7)">
+    <polygon points="7,3 17,17 5,16" fill="#DBA45E"/>
+    <polygon points="33,3 35,16 23,17" fill="#DBA45E"/>
+    <polygon points="9,7 15,15 8,15" fill="#F4DFBE"/>
+    <polygon points="31,7 32,15 25,15" fill="#F4DFBE"/>
+    <circle cx="20" cy="23" r="12" fill="#EBC591"/>
+    <ellipse cx="20" cy="27" rx="7.6" ry="5.6" fill="#F7E7CB"/>
+    <circle cx="15.5" cy="22" r="1.7" fill="#3B2A18"/>
+    <circle cx="24.5" cy="22" r="1.7" fill="#3B2A18"/>
+    <circle cx="20" cy="26" r="1.7" fill="#3B2A18"/>
+  </g>
+</svg>

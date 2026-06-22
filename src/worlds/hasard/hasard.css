@@ -1,0 +1,113 @@
+/* Styles specific to "Le grand hasard" — the "ways to make a sum" demo and the
+   two-dice bar chart. This world is themed amber, so it reads --amber-* directly.
+
+   Every selector is scoped under `.world-hasard` (the per-world root class the
+   engine sets on the loop) so nothing here can style the rest of the app. */
+
+/* L'idée demo wrapper */
+.world-hasard .hsd-demo {
+  background: var(--amber-l); border-radius: 18px;
+  padding: 16px 14px 18px; margin: 4px 0 16px; text-align: center;
+}
+.world-hasard .hsd-demo-q {
+  font-family: var(--font-display); font-weight: 600; font-size: 16px;
+  color: var(--amber-d); margin: 0 0 10px;
+}
+
+/* The row of sum buttons (2–12) — shared by l'idée's demo and le jeu's picker. */
+.world-hasard .hsd-sumrow {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; margin: 0 0 16px;
+}
+.world-hasard .hsd-sumbtn {
+  min-width: 42px; height: 44px; padding: 0 4px;
+  font-family: var(--font-display); font-weight: 600; font-size: 18px;
+  border: 2px solid #F0D49A; border-radius: 12px; cursor: pointer;
+  background: #fff; color: var(--amber-d);
+  transition: transform .12s ease, background .15s ease, border-color .15s ease;
+}
+.world-hasard .hsd-sumbtn.on { background: var(--amber); border-color: var(--amber); color: #fff; }
+.world-hasard .hsd-sumbtn:active { transform: scale(.94); }
+.world-hasard .hsd-sumbtn:disabled { cursor: default; }
+.world-hasard .hsd-sumbtn:disabled:active { transform: none; }
+/* The chosen champion still reads clearly once the picker is disabled. */
+.world-hasard .hsd-sumbtn.on:disabled { opacity: 1; }
+.world-hasard .hsd-sumbtn:disabled:not(.on) { opacity: .5; }
+
+/* L'idée — the pairs that make the chosen sum. */
+.world-hasard .hsd-ways { margin-top: 4px; }
+.world-hasard .hsd-ways-count {
+  font-family: var(--font-display); font-weight: 600; font-size: 17px;
+  color: var(--amber-d); margin: 0 0 10px;
+}
+.world-hasard .hsd-pairs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.world-hasard .hsd-pair {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #fff; border: 1.5px solid #F0D49A; border-radius: 999px; padding: 4px 10px;
+}
+.world-hasard .hsd-pip {
+  font-family: var(--font-display); font-weight: 600; font-size: 15px;
+  width: 22px; height: 22px; border-radius: 6px;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--amber-l); color: var(--amber-d);
+}
+.world-hasard .hsd-plus { color: var(--muted); font-size: 13px; font-weight: 700; }
+
+/* Le jeu — the bar chart. Each column: count on top, a fixed-height track with a
+   bar that grows from the bottom, and the sum label below. */
+.world-hasard .hsd-chart {
+  display: flex; align-items: flex-end; gap: 4px;
+  margin: 8px 0 6px; padding: 6px 2px 0;
+}
+.world-hasard .hsd-col { flex: 1; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.world-hasard .hsd-bar-count {
+  font-family: var(--font-display); font-weight: 600; font-size: 12px;
+  color: var(--muted); margin-bottom: 3px;
+}
+.world-hasard .hsd-bar-track {
+  width: 100%; height: 128px; display: flex; align-items: flex-end; justify-content: center;
+}
+.world-hasard .hsd-bar {
+  width: 76%; max-width: 26px; min-height: 3px; border-radius: 6px 6px 0 0;
+  background: #F4CF86; transform-origin: bottom;
+  animation: hsd-grow .6s cubic-bezier(.2, .8, .3, 1);
+}
+.world-hasard .hsd-bar.fav { background: var(--amber); }
+.world-hasard .hsd-bar.mine { outline: 3px solid var(--blue); outline-offset: 1px; }
+.world-hasard .hsd-bar-label {
+  font-family: var(--font-display); font-weight: 600; font-size: 13px;
+  color: var(--muted); margin-top: 5px;
+}
+.world-hasard .hsd-bar-label.mine { color: var(--blue); }
+
+@keyframes hsd-grow { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.world-hasard .hsd-chart.no-anim .hsd-bar { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  .world-hasard .hsd-bar { animation: none; }
+  .world-hasard .hsd-sumbtn { transition: none; }
+  .world-hasard .hsd-sumbtn:active { transform: none; }
+}
+
+/* Le jeu — legend under the chart. */
+.world-hasard .hsd-legend {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 14px;
+  font-family: var(--font-display); font-weight: 500; font-size: 13px; color: var(--muted);
+  margin: 2px 0 14px;
+}
+.world-hasard .hsd-key { width: 14px; height: 14px; border-radius: 4px; display: inline-block; vertical-align: -2px; margin-right: 4px; }
+.world-hasard .hsd-key-mine { background: #F4CF86; outline: 2px solid var(--blue); outline-offset: 1px; }
+.world-hasard .hsd-key-fav { background: var(--amber); }
+
+/* Le jeu — the reveal. */
+.world-hasard .hsd-reveal {
+  text-align: center; background: var(--amber-l); border-radius: 20px; padding: 20px 18px;
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.world-hasard .hsd-reveal-msg {
+  font-family: var(--font-display); font-weight: 500; font-size: 18px;
+  line-height: 1.4; color: var(--amber-d); margin: 0;
+}
+.world-hasard .hsd-reveal-sub {
+  font-family: var(--font-body); font-size: 14px; line-height: 1.45;
+  color: var(--amber-d); opacity: .82; margin: 0;
+}
+.world-hasard .hsd-reveal-actions { display: flex; gap: 12px; align-items: center; }
