@@ -1,0 +1,76 @@
+/* « Le saut de la puce » — piste, puce élastique, renard, relevé. */
+.flea { position: relative; }
+.flea-play { display: flex; flex-direction: column; gap: 16px; }
+
+.flea-main { display: flex; flex-direction: column; }
+
+.flea-track {
+  position: relative; height: 200px; border-radius: var(--r-xl);
+  background: rgba(8,11,31,.4); border: 1px solid var(--line-3); overflow: hidden;
+}
+.flea-ground {
+  position: absolute; left: 5%; right: 8%; top: 55%; height: 3px;
+  background: repeating-linear-gradient(90deg, #52461f 0 8px, transparent 8px 16px);
+}
+.flea-tick { position: absolute; top: 46%; bottom: 28%; width: 1px; background: rgba(245,198,107,.25); }
+.flea-tick.faint { background: rgba(245,198,107,.18); }
+.flea-tick.faintest { background: rgba(245,198,107,.12); }
+.flea-leaf { position: absolute; left: 3%; top: 50%; transform: translateY(-50%); font-size: 30px; }
+.flea-flower { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); }
+
+.flea-creature {
+  position: absolute; top: 55%;
+  transform: translate(-50%, -100%);
+  transition: left .55s cubic-bezier(.34, 1.4, .5, 1);
+}
+.flea-bob { display: block; animation: floaty 1.6s ease-in-out infinite; }
+
+.flea-cover { position: absolute; left: 5%; right: 8%; bottom: 16px; }
+.flea-cover .bar { height: 8px; background: rgba(0,0,0,.35); }
+.flea-cover .bar > i { transition: width .55s cubic-bezier(.34, 1.4, .5, 1); }
+.flea-cover-labels { display: flex; justify-content: space-between; margin-top: 6px; font-size: 11px; color: var(--ink-400); }
+
+.flea-controls { display: flex; gap: 14px; margin-top: 16px; align-items: center; }
+.flea-jump { flex: 1; min-height: 60px; font-size: 19px; }
+.flea-reset { width: 60px; height: 60px; border-radius: var(--r-lg); }
+
+.flea-rail { display: flex; flex-direction: column; gap: 14px; }
+.flea-fox {
+  background: rgba(8,11,31,.5); border: 1px solid var(--line-3); border-radius: var(--r-xl);
+  padding: 16px; display: flex; gap: 12px; align-items: flex-start;
+}
+.flea-fox-av { flex: none; }
+.flea-bubble {
+  position: relative; background: var(--surface-1); border: 1px solid var(--line-4);
+  border-radius: 14px; border-top-left-radius: 2px; padding: 11px 13px;
+  font-size: 13.5px; color: var(--ink-150); line-height: 1.45;
+}
+.flea-readout {
+  background: rgba(8,11,31,.5); border: 1px solid var(--line-3); border-radius: var(--r-xl);
+  padding: 18px; display: flex; flex-direction: column; gap: 12px;
+}
+.flea-stat-k { font-size: 12px; color: var(--ink-400); margin-bottom: 3px; }
+.flea-stat-v { font-family: var(--font-display); font-size: 30px; color: var(--or); line-height: 1; }
+.flea-stat-v.small { font-size: 24px; color: var(--ink-100); }
+.flea-stat-note { font-size: 12px; color: var(--ink-350); margin-top: 2px; }
+.flea-hr { height: 1px; background: var(--line-3); }
+.flea-count { font-size: 13px; color: var(--ink-350); }
+.flea-count b { color: var(--ink-100); font-size: 16px; }
+
+.flea-reveal {
+  margin-top: 22px; text-align: center;
+  background: radial-gradient(120% 100% at 50% 0%, rgba(42,33,80,.5), rgba(20,18,44,.2));
+  border: 1px solid rgba(169,139,217,.35); border-radius: var(--r-xl); padding: 24px 20px;
+}
+.flea-reveal .etoile { margin: 0 auto; }
+.flea-reveal-lead { font-size: 20px; color: var(--legendaire); margin-top: 10px; }
+.flea-reveal-title { font-size: 26px; max-width: 440px; margin: 4px auto 0; }
+
+/* tablette paysage : piste à gauche, renard + relevé à droite */
+@media (min-width: 900px) and (orientation: landscape) {
+  .flea-play { flex-direction: row; align-items: stretch; }
+  .flea-main { flex: 1; }
+  .flea-track { height: auto; min-height: 300px; }
+  .flea-rail { width: 290px; flex: none; }
+  .flea-readout { flex: 1; }
+}

@@ -1,0 +1,92 @@
+.map {
+  background: radial-gradient(120% 60% at 50% 8%, #1c2452 0%, #0E1430 48%, #080B1F 100%);
+}
+.map-layout {
+  position: relative; z-index: 2; display: flex; flex-direction: column;
+  min-height: 100%;
+}
+.map-rail { padding: calc(var(--safe-top) + 16px) 22px 0; }
+
+/* —— En-tête —— */
+.map-header { display: flex; align-items: center; gap: 12px; }
+.map-avatar {
+  width: 48px; height: 48px; border-radius: 50%; flex: none;
+  background: var(--surface-1); border: 1.5px solid var(--or);
+  display: flex; align-items: center; justify-content: center;
+}
+.map-hello { flex: 1; min-width: 0; }
+.map-hello-k { font-size: 13px; color: var(--ink-450); }
+.map-hello-name { font-size: 24px; line-height: 1; }
+
+/* —— Bannière « ce soir » —— */
+.map-banner {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  margin-top: 16px; padding: 12px 14px; cursor: pointer;
+  background: linear-gradient(100deg, rgba(245,198,107,.16), rgba(232,161,76,.06));
+  border: 1px solid rgba(245,198,107,.4); border-radius: var(--r-lg);
+}
+.map-banner.is-resume { animation: none; background: linear-gradient(100deg, rgba(245,198,107,.1), rgba(232,161,76,.03)); }
+.map-banner-body { flex: 1; min-width: 0; }
+.map-banner-title { display: block; font-size: 14px; font-weight: 700; color: var(--ink-100); }
+.map-banner-sub { display: block; font-size: 12px; color: var(--ink-350); margin-top: 1px; }
+.map-banner-arrow { color: var(--or); font-size: 18px; }
+
+.map-calm {
+  margin-top: 16px; padding: 16px 18px; border-radius: var(--r-lg);
+  background: rgba(255,255,255,.03); border: 1px solid var(--line-2);
+}
+.map-calm-title { font-size: 21px; color: var(--ink-200); }
+.map-calm-text { font-size: 13px; color: var(--ink-300); line-height: 1.5; margin: 8px 0 0; }
+.map-calm-soft { color: var(--w-motifs); }
+
+/* —— Toile de la carte —— */
+.map-canvas { position: relative; flex: 1; min-height: 620px; margin-top: 14px; padding-bottom: calc(var(--nav-h) + 24px); }
+.map-path { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* —— Nœud-monde —— */
+.wnode { position: absolute; display: flex; flex-direction: column; align-items: center; }
+.wnode-new {
+  position: absolute; top: -14px; z-index: 5;
+  background: var(--or); color: var(--on-or);
+  font-size: 10px; font-weight: 800; letter-spacing: .04em;
+  padding: 3px 9px; border-radius: var(--r-pill);
+  box-shadow: 0 4px 10px rgba(245,198,107,.5);
+}
+.wnode-orb {
+  position: relative; border-radius: 50%; border: none; cursor: pointer; padding: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.wnode-orb:active { transform: scale(.97); }
+.wnode-orb.is-locked { opacity: .5; filter: grayscale(.4); cursor: default; }
+.wnode-halo {
+  position: absolute; inset: -6px; border-radius: 50%;
+  border: 1.5px solid rgba(245,198,107,.6); animation: glowpulse 2.6s ease-in-out infinite;
+}
+.wnode-lockveil {
+  position: absolute; inset: 0; border-radius: 50%;
+  background: rgba(8,11,31,.45); display: flex; align-items: center; justify-content: center;
+}
+.wnode-name {
+  margin-top: 9px; font-size: 12.5px; color: var(--ink-150); text-align: center;
+  font-weight: 600; line-height: 1.1;
+}
+.wnode-status { font-size: 11px; margin-top: 2px; }
+
+/* —— Tablette paysage : panneau du soir + carte panoramique —— */
+@media (min-width: 900px) and (orientation: landscape) {
+  .map-layout { flex-direction: row; }
+  .map-rail {
+    width: 330px; flex: none; padding: 36px 28px;
+    border-right: 1px solid rgba(255,255,255,.06); background: rgba(8,11,31,.35);
+    display: flex; flex-direction: column;
+  }
+  .map-canvas { flex: 1; min-height: 0; margin-top: 0; }
+  .map-header { flex-wrap: wrap; }
+}
+
+/* Tablette portrait — la carte s'ouvre */
+@media (min-width: 760px) and (orientation: portrait) {
+  .map-rail { padding-left: 40px; padding-right: 40px; }
+  .map-hello-name { font-size: 30px; }
+  .map-canvas { min-height: 680px; }
+}

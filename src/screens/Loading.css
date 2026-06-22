@@ -1,0 +1,20 @@
+.loading-screen {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  background: radial-gradient(120% 70% at 50% 40%, #1c2452 0%, #0E1430 50%, #080B1F 100%);
+}
+.loading-center { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 26px; }
+.loading-word { text-align: center; }
+.loading-title { font-size: 58px; }
+.loading-sub { font-size: 24px; color: var(--legendaire); margin-top: 4px; }
+.loading-bar {
+  width: 150px; height: 4px; border-radius: 3px; background: #1B2350; overflow: hidden; position: relative;
+}
+.loading-bar > span {
+  position: absolute; inset: 0; width: 60px; border-radius: 3px;
+  background: linear-gradient(90deg, transparent, var(--or), transparent);
+  animation: drift 1.4s ease-in-out infinite alternate;
+}
+.loading-foot {
+  position: absolute; bottom: calc(30px + var(--safe-bottom)); left: 0; right: 0;
+  text-align: center; font-size: 12px; color: var(--ink-600); z-index: 2;
+}

@@ -1,0 +1,48 @@
+/* ============================================================================
+   Eurêka — vocabulaire de mouvement (porté tel quel du fichier de design)
+   « Orchestré, pas clignotant — la vie au bon endroit. »
+   Toutes les @keyframes du fichier + repli prefers-reduced-motion partout.
+   ============================================================================ */
+
+@keyframes twinkle   { 0%,100% { opacity:.25; transform:scale(.7); } 50% { opacity:1; transform:scale(1.15); } }
+@keyframes floaty    { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-10px); } }
+@keyframes floatySlow{ 0%,100% { transform:translateY(0) rotate(-1deg); } 50% { transform:translateY(-16px) rotate(1deg); } }
+@keyframes breathe   { 0%,100% { transform:scale(1); } 50% { transform:scale(1.04); } }
+@keyframes spark     { 0%,100% { transform:scale(.85) rotate(0deg); opacity:.8; } 50% { transform:scale(1.15) rotate(45deg); opacity:1; } }
+@keyframes shimmer   { 0% { transform:translateX(-120%) skewX(-18deg); } 60%,100% { transform:translateX(320%) skewX(-18deg); } }
+@keyframes drift     { 0% { transform:translateX(0); } 100% { transform:translateX(-40px); } }
+@keyframes earwiggle { 0%,92%,100% { transform:rotate(0deg); } 95% { transform:rotate(-5deg); } 98% { transform:rotate(4deg); } }
+@keyframes hop       { 0% { transform:translateY(0) scaleY(1); } 30% { transform:translateY(-26px) scaleY(1.08); } 60% { transform:translateY(-6px) scaleY(.96); } 100% { transform:translateY(0) scaleY(1); } }
+@keyframes rise      { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+@keyframes orbit     { from { transform:rotate(0deg); } to { transform:rotate(360deg); } }
+@keyframes glowpulse { 0%,100% { box-shadow:0 0 0 0 rgba(245,198,107,.35); } 50% { box-shadow:0 0 0 12px rgba(245,198,107,0); } }
+@keyframes dash      { to { stroke-dashoffset:0; } }
+@keyframes ringspin  { from { transform:rotate(0); } to { transform:rotate(360deg); } }
+
+/* fondus d'apparition d'écran (chrome de l'app) */
+@keyframes fadein    { from { opacity:0; } to { opacity:1; } }
+@keyframes popin     { from { opacity:0; transform:scale(.92); } to { opacity:1; transform:scale(1); } }
+
+/* Classes utilitaires de mouvement */
+.m-twinkle   { animation: twinkle 3s ease-in-out infinite; }
+.m-floaty    { animation: floaty 5s ease-in-out infinite; }
+.m-floatySlow{ animation: floatySlow 7s ease-in-out infinite; }
+.m-breathe   { animation: breathe 3.4s ease-in-out infinite; }
+.m-spark     { animation: spark 3s ease-in-out infinite; }
+.m-glowpulse { animation: glowpulse 3.4s ease-in-out infinite; }
+.m-rise      { animation: rise .5s ease-out both; }
+
+/* ----------------------------------------------------------------------------
+   prefers-reduced-motion : on coupe toute la vie ambiante, on garde des fondus
+   très courts (snap) pour que rien ne « saute » brutalement. Respecté partout.
+   ---------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* les étoiles restent visibles, simplement fixes à mi-éclat */
+  .star { opacity: .55 !important; transform: none !important; }
+}

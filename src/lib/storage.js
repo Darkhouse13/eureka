@@ -1,35 +1,56 @@
-// All progress lives on the device. No accounts, no network, no tracking.
-const KEY = 'eureka.v1'
+// Tout l'état vit sur l'appareil. Aucun compte, aucun réseau, aucun pistage.
+// Schéma v2 (l'échelle des défis). Migration douce depuis v1 (le nom du guide).
+const KEY = 'eureka.v2'
+const KEY_V1 = 'eureka.v1'
 
 export const DEFAULT_STATE = {
-  foxName: '',      // empty => first run, show Welcome
-  cards: [],        // earned wonder-card ids
-  completed: [],    // completed world ids
-  lastOpened: null, // last world id opened
+  version: 2,
+  guideName: '',          // '' => première ouverture, on montre l'accueil « nomme ton guide »
+  childName: null,        // optionnel, local — par défaut aucun (« exploratrice de minuit »)
+  cards: {},              // { [cardId]: dateGain(ms) }
+  progress: {},           // { [worldId]: { done: {[challengeId]:true}, last: challengeId|null } }
+  lastOpened: null,       // { worldId, challengeId } | null
+  seen: {},               // { [challengeId]: true } — défis déjà ouverts (pour la pastille NOUVEAU)
+  sound: { enabled: true, music: false },  // effets activés, musique coupée par défaut
 }
+
+function migrateFromV1() {
+  try {
+    const raw = localStorage.getItem(KEY_V1)
+    if (!raw) return null
+    const v1 = JSON.parse(raw)
+    return { ...clone(DEFAULT_STATE), guideName: typeof v1.foxName === 'string' ? v1.foxName : '' }
+  } catch {
+    return null
+  }
+}
+
+function clone(o) { return JSON.parse(JSON.stringify(o)) }
 
 export function loadState() {
   try {
     const raw = localStorage.getItem(KEY)
-    if (!raw) return null
+    if (!raw) return migrateFromV1()
     const data = JSON.parse(raw)
-    // Be defensive: merge over defaults so older/partial saves never crash.
     return {
-      ...DEFAULT_STATE,
+      ...clone(DEFAULT_STATE),
       ...data,
-      cards: Array.isArray(data.cards) ? data.cards : [],
-      completed: Array.isArray(data.completed) ? data.completed : [],
+      cards: isObj(data.cards) ? data.cards : {},
+      progress: isObj(data.progress) ? data.progress : {},
+      seen: isObj(data.seen) ? data.seen : {},
+      sound: { ...DEFAULT_STATE.sound, ...(isObj(data.sound) ? data.sound : {}) },
     }
   } catch {
     return null
   }
 }
 
+function isObj(v) { return v && typeof v === 'object' && !Array.isArray(v) }
+
 export function saveState(state) {
   try {
     localStorage.setItem(KEY, JSON.stringify(state))
   } catch {
-    // Storage can be unavailable (private mode, quota). Failing to persist
-    // should never break the experience.
+    // Stockage indisponible (mode privé, quota) — ne doit jamais casser l'expérience.
   }
 }

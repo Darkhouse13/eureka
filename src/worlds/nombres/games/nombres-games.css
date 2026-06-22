@@ -1,0 +1,66 @@
+/* Mises en page communes aux jeux « légers » du monde des nombres. */
+.ng { display: flex; flex-direction: column; gap: 18px; }
+
+.ng-stage {
+  position: relative; text-align: center;
+  background: rgba(8,11,31,.4); border: 1px solid var(--line-3); border-radius: var(--r-xl);
+  padding: 28px 22px;
+}
+.ng-eyebrow { margin-bottom: 10px; }
+.ng-big { font-family: var(--font-display); font-size: 76px; color: var(--or); line-height: .9; }
+.ng-big sup { font-size: .42em; vertical-align: super; }
+.ng-name { font-family: var(--font-display); font-style: italic; font-size: 26px; color: var(--ink-100); margin-top: 8px; }
+.ng-sub { font-size: 13px; color: var(--ink-350); margin-top: 6px; }
+.ng-zeros {
+  margin-top: 14px; font-family: var(--font-body); font-size: 14px; color: var(--ink-400);
+  word-break: break-all; line-height: 1.5; letter-spacing: 1px;
+}
+.ng-grains { font-family: var(--font-display); font-size: 40px; color: var(--or); line-height: 1; word-break: break-word; }
+.ng-double-bar { height: 8px; border-radius: 4px; background: rgba(0,0,0,.3); overflow: hidden; margin: 16px auto 0; max-width: 320px; }
+.ng-double-bar > i { display: block; height: 100%; background: var(--grad-or); transition: width .3s ease; }
+.ng-total { font-size: 14px; color: var(--ink-300); margin-top: 12px; }
+.ng-total b { color: var(--ink-100); }
+
+.ng-fox {
+  font-size: 14px; color: var(--ink-200); line-height: 1.5;
+  background: var(--surface-1); border: 1px solid var(--line-3); border-radius: var(--r-md);
+  padding: 13px 15px;
+}
+
+.ng-controls { display: flex; gap: 12px; align-items: center; }
+.ng-controls .btn-or { flex: 1; }
+.ng-controls .iconbtn { width: 54px; height: 54px; border-radius: var(--r-md); }
+
+.ng-reveal {
+  text-align: center; margin-top: 4px;
+  background: radial-gradient(120% 100% at 50% 0%, rgba(42,33,80,.5), rgba(20,18,44,.15));
+  border: 1px solid rgba(169,139,217,.35); border-radius: var(--r-xl); padding: 22px 18px;
+}
+.ng-reveal .etoile { margin: 0 auto; }
+.ng-reveal-title { font-size: 26px; max-width: 440px; margin: 10px auto 0; }
+
+/* — Hôtel de Hilbert — */
+.hotel { background: rgba(8,11,31,.4); border: 1px solid var(--line-3); border-radius: var(--r-xl); padding: 18px; }
+.hotel-roof { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.hotel-served { font-size: 13px; color: var(--ink-350); }
+.hotel-served b { color: var(--or); font-size: 16px; }
+.hotel-rooms { display: flex; gap: 8px; align-items: stretch; overflow: hidden; }
+.hroom {
+  flex: 1; min-width: 0; border-radius: 12px; background: var(--surface-1); border: 1px solid var(--line-3);
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 4px;
+  transition: border-color .3s ease, background .3s ease;
+}
+.hroom-no { font-size: 11px; color: var(--ink-400); }
+.hroom-guest {
+  width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,.06); color: var(--ink-200); font-size: 14px; font-weight: 700;
+}
+.hroom.is-new { border-color: var(--or); background: rgba(245,198,107,.1); }
+.hroom.is-new .hroom-guest { background: var(--grad-or); color: var(--on-or); }
+.hroom-more { flex: none; width: 28px; border: 1px dashed var(--line-5); background: none; color: var(--ink-500); justify-content: center; }
+.hotel-controls { flex-wrap: wrap; }
+.hotel-controls .btn-soft, .hotel-controls .btn-or { flex: 1; min-width: 140px; }
+
+@media (min-width: 900px) and (orientation: landscape) {
+  .ng { max-width: 720px; margin: 0 auto; }
+}

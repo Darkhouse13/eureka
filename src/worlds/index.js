@@ -1,27 +1,41 @@
-// The world registry — the heart of the pluggable architecture.
-// Adding a world is: create a folder under src/worlds/, default-export a world
-// definition, and add it to this array. The engine renders everything else.
+// Le registre des mondes — le cœur de l'architecture enfichable.
 //
-// World definition shape:
-//   id          string   unique id (also the localStorage key for completion)
-//   name        string   shown on the map and in the loopbar
-//   icon        Comp     a React icon component (see src/icons.jsx)
-//   color       string   theme colour name (see src/theme.js)
-//   status      string   'available' (playable now) | 'soon' (locked placeholder)
-//   cards       string[] wonder-card ids this world grants on solve
-//   createSession?  ()=>data   optional per-play data shared across the loop steps
-//   etincelle   Comp     "l'étincelle" content  — props: { session, onNext }
-//   idee        Comp     "l'idée" content        — props: { session, onNext }
-//   Game        Comp     "le jeu"                — props: { session, onSolve }
-//   decouverte  Comp     "la découverte" content — props: { session, onFinish }
+// Une échelle de défis : un monde est un tableau ORDONNÉ de défis. Chaque défi a
+// sa boucle à quatre temps (l'étincelle → l'idée → le jeu → la découverte) et
+// accorde une ou plusieurs cartes. Le moteur possède la carte, l'écran d'échelle,
+// la boucle, la célébration, l'attribution des cartes, la progression, la mémoire.
+// Un monde ne fournit que du CONTENU + des jeux.
 //
-// A 'soon' world only needs id/name/icon/color/status — the loop never opens.
-import codes from './codes/index.js'
-import infinity from './infinity/index.js'
-import motifs from './motifs/index.js'
-import hasard from './hasard/index.js'
-import formes from './formes/index.js'
+// Forme d'un monde :
+//   id          string         identifiant unique (clé de progression)
+//   name        string         nom complet
+//   shortName   [string,…]     libellé sur deux lignes pour la carte
+//   numero      string         « 02 » — cosmétique, l'ordre dans l'app
+//   tagline     string         une ligne sous le titre
+//   blurb       string         présentation du monde (écran d'échelle)
+//   status      'ready'|'bientot'
+//   challenges  Challenge[]    barreaux ordonnés
+//
+// Forme d'un défi :
+//   id, index, title, kind ('challenge'|'treasure')
+//   etincelle { lead, text }                 — temps 1
+//   idee      { lead, title, Demo?, text? }  — temps 2 (démo inline facultative)
+//   Game      Comp(props:{ onSolve })        — temps 3 (appelle onSolve())
+//   decouverte{ lead, title, text }          — temps 4
+//   cards     [cardId,…]                      — cartes accordées à la résolution
+//
+// Pour ajouter le prochain monde : créer un dossier, exporter une définition, et
+// l'enregistrer ici. Les jeux préservés (César, symétrie, dés, Möbius, zoom)
+// deviendront les barreaux des mondes « bientôt ».
 
-export const WORLDS = [codes, infinity, motifs, hasard, formes]
+import nombres from './nombres/index.jsx'
+import { codes, motifs, hasard, formes } from './stubs.js'
+
+// Ordre d'affichage sur la carte. « Les nombres sans fin » d'abord : c'est le
+// monde ouvert et complet de cette passe ; les autres suivent, « bientôt ».
+export const WORLDS = [nombres, codes, motifs, hasard, formes]
 
 export const getWorld = (id) => WORLDS.find((w) => w.id === id)
+
+// Défis « réels » (hors trésor) d'un monde.
+export const realChallenges = (w) => (w.challenges || []).filter((c) => c.kind !== 'treasure')

@@ -1,13 +1,23 @@
 .bottomnav {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 74px;
-  background: #fff; border-top: 1.5px solid var(--line);
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 30;
+  height: calc(var(--nav-h) + var(--safe-bottom));
+  padding: 0 24px calc(14px + var(--safe-bottom));
   display: flex; align-items: center; justify-content: space-around;
-  z-index: 40; padding-bottom: env(safe-area-inset-bottom);
+  background: linear-gradient(180deg, rgba(8,11,31,0), var(--nuit) 42%);
 }
-.navbtn {
-  background: none; border: none; display: flex; flex-direction: column;
-  align-items: center; gap: 3px; font-family: var(--font-display); font-weight: 500;
-  font-size: 12px; color: var(--muted); cursor: pointer; padding: 6px 14px; border-radius: 14px;
+.navtab {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  min-width: 56px; min-height: 48px; padding: 4px 8px;
+  border: none; background: none; cursor: pointer;
+  color: var(--ink-500); font-family: var(--font-body); font-size: 10px; font-weight: 500;
+  transition: color .15s ease;
 }
-.navbtn svg { width: 24px; height: 24px; }
-.navbtn.active { color: var(--purple); }
+.navtab svg { transition: stroke .15s ease; }
+.navtab.is-active { color: var(--or); font-weight: 600; }
+.navtab:hover { color: var(--ink-200); }
+.navtab.is-active:hover { color: var(--or); }
+
+@media (min-width: 760px) {
+  .bottomnav { gap: 80px; justify-content: center; }
+  .navtab { font-size: 12px; }
+}

@@ -1,0 +1,59 @@
+.collection { background: radial-gradient(120% 50% at 50% 5%, #1c2452, #0E1430 55%, #080B1F); }
+
+.coll-title { font-size: 32px; }
+.coll-progress { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+.coll-progress .bar { flex: 1; height: 7px; }
+.coll-progress-n { font-size: 13px; color: var(--or); font-weight: 700; }
+
+/* —— Dernière trouvaille —— */
+.coll-featured {
+  position: relative; width: 100%; text-align: left; display: flex; gap: 14px; align-items: center;
+  margin-top: 18px; padding: 16px; border-radius: var(--r-xl); cursor: pointer; overflow: hidden;
+  background: linear-gradient(120deg, #2a2412, #16142e); border: 1.5px solid var(--or);
+  box-shadow: 0 18px 40px -18px rgba(245,198,107,.5);
+}
+.coll-featured-tag {
+  position: absolute; top: 0; left: 0; background: var(--or); color: var(--on-or);
+  font-size: 10px; font-weight: 800; padding: 3px 12px; border-bottom-right-radius: 10px;
+}
+.coll-featured-spine {
+  position: relative; width: 74px; height: 104px; border-radius: 11px; flex: none; margin-top: 8px;
+  display: flex; align-items: center; justify-content: center; overflow: hidden;
+  background: linear-gradient(165deg, #2a2412, #15122c); border: 1.5px solid var(--or);
+}
+.coll-featured-body { margin-top: 8px; }
+.coll-featured-k { display: block; font-size: 11px; color: var(--ambre); letter-spacing: .08em; text-transform: uppercase; }
+.coll-featured-name { display: block; font-family: var(--font-display); font-size: 24px; color: var(--ink-100); line-height: 1; margin-top: 2px; }
+.coll-featured-sub { display: block; font-size: 12px; color: var(--ink-350); margin-top: 4px; }
+
+.coll-filters { display: flex; gap: 8px; margin: 20px 0 16px; }
+
+.coll-group-head { margin-bottom: 12px; }
+.coll-group { margin-bottom: 18px; }
+.coll-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; }
+
+/* —— État vide —— */
+.collection-empty { background: radial-gradient(120% 60% at 50% 30%, #161d3e, #0E1430 60%, #080B1F); display: flex; }
+.empty-wrap {
+  margin: auto; text-align: center; max-width: 360px;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 0 30px calc(var(--nav-h) + 20px);
+}
+.empty-title { font-size: 30px; line-height: 1.15; margin-top: 22px; }
+.empty-text { font-size: 14px; color: var(--ink-300); line-height: 1.5; margin: 10px 0 24px; }
+
+/* —— Vue carte agrandie —— */
+.coll-modal {
+  position: absolute; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center;
+  padding: 30px; background: radial-gradient(circle at 50% 40%, rgba(20,18,44,.86), rgba(8,11,22,.96));
+  animation: fadein .25s ease both;
+}
+.coll-modal-inner { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+.coll-modal-hint { font-family: var(--font-hand); font-size: 16px; color: var(--ink-450); }
+
+@media (min-width: 760px) {
+  .coll-grid { grid-template-columns: repeat(5, 1fr); gap: 14px; }
+}
+@media (min-width: 900px) and (orientation: landscape) {
+  .coll-grid { grid-template-columns: repeat(6, 1fr); }
+}

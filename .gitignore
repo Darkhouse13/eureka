@@ -17,3 +17,10 @@ yarn-error.log*
 
 # Stray editor file
 New Text Document.txt
+
+# Design source material (not part of the build)
+_design_extract/
+Nocturne design system.zip
+Eurêka - Atelier de Minuit.pdf
+
+_verify/

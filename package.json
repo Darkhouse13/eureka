@@ -11,8 +11,9 @@
     "icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
-    "@fontsource/fredoka": "^5.1.0",
-    "@fontsource/nunito": "^5.1.0",
+    "@fontsource/caveat": "^5.2.8",
+    "@fontsource/cormorant-garamond": "^5.2.11",
+    "@fontsource/hanken-grotesk": "^5.2.8",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

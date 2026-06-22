@@ -1,32 +1,40 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-label="Eurêka">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#7A6BEA"/>
-      <stop offset="1" stop-color="#3F2F9E"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="36%" r="62%">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.18"/>
-      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    <radialGradient id="midnight" cx="32%" cy="22%" r="95%">
+      <stop offset="0" stop-color="#1c2452"/>
+      <stop offset="0.55" stop-color="#0E1430"/>
+      <stop offset="1" stop-color="#080B1F"/>
     </radialGradient>
   </defs>
-  <rect width="512" height="512" fill="url(#bg)"/>
-  <rect width="512" height="512" fill="url(#glow)"/>
 
-  <!-- l'étincelle -->
-  <g transform="translate(228,56) scale(2.3)" fill="#F6C25A">
-    <path d="M12 3l2.6 5.4 5.9.9-4.3 4.1 1 5.9L12 16.6 6.8 19.3l1-5.9L3.5 9.3l5.9-.9z"/>
+  <!-- fond de minuit, plein bord (compatible masque) -->
+  <rect width="512" height="512" fill="url(#midnight)"/>
+
+  <!-- étoiles -->
+  <g fill="#FBE9C4">
+    <circle cx="96" cy="120" r="5" opacity="0.85"/>
+    <circle cx="406" cy="190" r="4" opacity="0.7"/>
+    <circle cx="120" cy="330" r="3.5" opacity="0.6"/>
+    <circle cx="392" cy="360" r="4.5" opacity="0.8"/>
   </g>
 
-  <!-- le renard guide -->
-  <g transform="translate(116,150) scale(7)">
-    <polygon points="7,3 17,17 5,16" fill="#DBA45E"/>
-    <polygon points="33,3 35,16 23,17" fill="#DBA45E"/>
-    <polygon points="9,7 15,15 8,15" fill="#F4DFBE"/>
-    <polygon points="31,7 32,15 25,15" fill="#F4DFBE"/>
-    <circle cx="20" cy="23" r="12" fill="#EBC591"/>
-    <ellipse cx="20" cy="27" rx="7.6" ry="5.6" fill="#F7E7CB"/>
-    <circle cx="15.5" cy="22" r="1.7" fill="#3B2A18"/>
-    <circle cx="24.5" cy="22" r="1.7" fill="#3B2A18"/>
-    <circle cx="20" cy="26" r="1.7" fill="#3B2A18"/>
+  <!-- l'étincelle — l'étoile d'or à quatre branches -->
+  <g transform="translate(330,92) scale(2.6)">
+    <path d="M12 0 C13 8 16 11 24 12 C16 13 13 16 12 24 C11 16 8 13 0 12 C8 11 11 8 12 0Z" fill="#F5C66B"/>
+  </g>
+
+  <!-- le fennec guide — lignes d'or, regard vif (zone de sécurité) -->
+  <g transform="translate(88,150) scale(2.45)">
+    <path d="M44 64 L22 14 L66 46 Z" fill="#F5C66B" stroke="#0E1430" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M96 64 L118 14 L74 46 Z" fill="#F5C66B" stroke="#0E1430" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M44 60 L31 28 L60 47 Z" fill="#E8718A" opacity="0.5"/>
+    <path d="M96 60 L109 28 L80 47 Z" fill="#E8718A" opacity="0.5"/>
+    <path d="M70 40 C100 40 108 66 104 86 C100 108 86 120 70 120 C54 120 40 108 36 86 C32 66 40 40 70 40 Z" fill="#FBE9C4" stroke="#0E1430" stroke-width="2.5"/>
+    <path d="M70 80 C79 80 86 87 86 96 C86 107 79 113 70 113 C61 113 54 107 54 96 C54 87 61 80 70 80Z" fill="#fff8ec"/>
+    <ellipse cx="57" cy="74" rx="5.5" ry="7" fill="#1B2350"/>
+    <ellipse cx="83" cy="74" rx="5.5" ry="7" fill="#1B2350"/>
+    <circle cx="59" cy="71" r="1.8" fill="#fff"/>
+    <circle cx="85" cy="71" r="1.8" fill="#fff"/>
+    <path d="M65 89 H75 L70 96 Z" fill="#1B2350"/>
   </g>
 </svg>

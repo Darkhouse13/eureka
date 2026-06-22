@@ -1,0 +1,76 @@
+.profil { background: radial-gradient(120% 45% at 50% 4%, #1c2452, #0E1430 55%, #080B1F); }
+
+/* —— Tête —— */
+.pf-head { display: flex; align-items: center; gap: 16px; }
+.pf-avatar {
+  position: relative; width: 84px; height: 84px; border-radius: 50%; flex: none;
+  background: var(--surface-1); border: 2px solid var(--or);
+  display: flex; align-items: center; justify-content: center; box-shadow: 0 0 24px rgba(245,198,107,.3);
+}
+.pf-id { flex: 1; min-width: 0; }
+.pf-name { font-size: 30px; line-height: 1; }
+.pf-sub { font-size: 13px; color: var(--ink-350); margin-top: 3px; }
+.pf-rename {
+  background: none; border: none; padding: 4px 0 0; margin: 0; cursor: pointer;
+  font-family: var(--font-body); font-size: 12px; color: var(--w-codes); text-decoration: underline;
+}
+.pf-count { text-align: center; background: rgba(245,198,107,.1); border: 1px solid rgba(245,198,107,.3); border-radius: var(--r-lg); padding: 10px 16px; }
+.pf-count-n { font-size: 32px; color: var(--or); line-height: 1; }
+.pf-count-k { font-size: 11px; color: var(--ink-350); }
+
+/* —— Constellation —— */
+.pf-constellation {
+  position: relative; margin-top: 18px; border-radius: var(--r-lg); overflow: hidden;
+  background: linear-gradient(160deg, #11173a, #0a0d22); border: 1px solid var(--line-4); padding: 18px;
+}
+.pf-sky { width: 100%; position: relative; z-index: 2; margin-top: 6px; }
+.pf-sky-note { position: relative; z-index: 2; font-size: 17px; color: var(--w-motifs); margin-top: 4px; }
+.pf-constellation .eyebrow { position: relative; z-index: 2; }
+
+/* —— Anneaux —— */
+.pf-rings { display: flex; justify-content: space-between; margin-top: 18px; gap: 6px; }
+.ring { display: flex; flex-direction: column; align-items: center; }
+.ring-pct { font-size: 10px; margin-top: 2px; }
+.ring-label { font-size: 10px; color: var(--ink-400); margin-top: 1px; }
+
+/* —— Le guide a appris —— */
+.pf-learned {
+  display: flex; align-items: center; gap: 12px; margin-top: 18px;
+  background: rgba(127,201,168,.08); border: 1px solid rgba(127,201,168,.3); border-radius: var(--r-lg);
+  padding: 14px 16px; font-size: 13px; color: #cfe6dc; line-height: 1.4;
+}
+.pf-learned b { color: var(--ink-100); }
+
+/* —— Réglages —— */
+.pf-settings { margin-top: 22px; }
+.pf-set-head { margin: 16px 0 8px; }
+.pf-row {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  background: var(--surface-1); border: 1px solid var(--line-3); border-radius: var(--r-md);
+  padding: 13px 15px; margin-bottom: 8px; cursor: pointer; min-height: 56px;
+}
+.pf-row-static, .pf-name-edit { cursor: default; }
+.pf-row-sub { margin-left: 16px; background: rgba(16,20,42,.6); }
+.pf-row-sub.is-disabled { opacity: .5; cursor: default; }
+.pf-row-body { flex: 1; min-width: 0; }
+.pf-row-k { display: block; font-size: 15px; color: var(--ink-150); font-weight: 600; }
+.pf-row-s { display: block; font-size: 12px; color: var(--ink-400); margin-top: 1px; }
+.pf-row-arrow { color: var(--ink-400); font-size: 15px; }
+.pf-name-field { font-family: var(--font-body); font-size: 16px; text-align: left; min-height: 44px; }
+.pf-name-save { width: auto; min-width: 64px; margin-left: 10px; min-height: 44px; }
+
+/* interrupteur */
+.toggle {
+  width: 50px; height: 30px; border-radius: var(--r-pill); background: var(--line-5);
+  position: relative; flex: none; transition: background .2s ease;
+}
+.toggle > span {
+  position: absolute; top: 3px; left: 3px; width: 24px; height: 24px; border-radius: 50%;
+  background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,.3); transition: left .2s ease;
+}
+.toggle.on { background: var(--ambre); }
+.toggle.on > span { left: 23px; }
+
+@media (min-width: 760px) {
+  .pf-name { font-size: 40px; }
+}

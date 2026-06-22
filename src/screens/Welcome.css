@@ -1,0 +1,32 @@
+.welcome {
+  background: radial-gradient(120% 70% at 50% 22%, #20285a 0%, #0E1430 52%, #080B1F 100%);
+  display: flex; flex-direction: column;
+}
+.welcome-grid {
+  position: relative; z-index: 2; flex: 1;
+  display: flex; flex-direction: column; align-items: center;
+  max-width: 520px; margin: 0 auto; width: 100%;
+  padding: calc(var(--safe-top) + 40px) 28px calc(var(--safe-bottom) + 28px);
+}
+.welcome-fox { position: relative; margin-top: 8px; }
+.welcome-fox-glow {
+  position: absolute; inset: -22px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(245,198,107,.28), transparent 68%);
+}
+.welcome-body { width: 100%; }
+.welcome-lead { font-size: 22px; color: var(--ambre); text-align: center; margin: 14px 0 0; }
+.welcome-greeting { font-size: 30px; text-align: center; line-height: 1.2; margin: 6px 0 0; }
+.welcome-q { color: var(--legendaire); }
+.welcome-form { margin-top: auto; padding-top: 26px; }
+.welcome-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 14px 0 16px; }
+
+/* Tablette paysage — la scène respire, deux colonnes */
+@media (min-width: 900px) and (orientation: landscape) {
+  .welcome-grid { flex-direction: row; align-items: center; gap: 50px; max-width: 980px; }
+  .welcome-fox { flex: none; }
+  .welcome-body { flex: 1; }
+  .welcome-lead, .welcome-greeting { text-align: left; }
+  .welcome-greeting { font-size: 42px; }
+  .welcome-form { margin-top: 24px; }
+  .welcome-chips { justify-content: flex-start; }
+}

@@ -1,49 +1,93 @@
-/* Design tokens + global reset + animations.
-   Carried over verbatim from the prototype's :root and @keyframes so the
-   visual identity is identical. Every world and component reads these. */
+/* ============================================================================
+   Eurêka — L'Atelier de Minuit · couche de jetons (design tokens)
+   Toute l'app dérive de ces variables. Source : « Atelier de Minuit ».
+   Palette « Encre & Or » + cinq mondes + typo + rayons + ombres + mouvement.
+   ============================================================================ */
+
 :root {
-  --ink: #2A2342;
-  --muted: #736C88;
-  --line: #ECE8F5;
-  --card: #FFFFFF;
-  --bg1: #ECEEFF;
-  --bg2: #FFF6EC;
-  --blue: #2E6FD6;
-  --blue-l: #E7F0FF;
-  --blue-d: #194A96;
-  --purple: #6C5CE0;
-  --purple-l: #EDEAFE;
-  --purple-d: #3F2F9E;
-  --amber: #F0A92B;
-  --amber-l: #FDEFD3;
-  --amber-d: #946309;
-  --pink: #E45A92;
-  --pink-l: #FCE6EF;
-  --teal: #15A98A;
-  --teal-l: #DDF3EE;
-  --accent: var(--purple);
-  --font-display: 'Fredoka', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  --font-body: 'Nunito', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  /* — Palette Encre & Or — */
+  --encre: #0E1430;        /* Encre de Minuit */
+  --or: #F5C66B;           /* Or de Bougie */
+  --nuit: #080B1F;         /* Nuit Profonde */
+  --creme: #F4ECD8;        /* Crème Parchemin */
+  --creme-clair: #FBE9C4;  /* lumière de bougie — texte titres */
+  --ambre: #E8A14C;        /* dégradé chaud de l'or */
+
+  /* — Fond : lavis de minuit radial (exact du fichier) — */
+  --bg-wash:
+    radial-gradient(140% 90% at 12% 0%, #14182c 0%, #0a0b12 55%),
+    radial-gradient(120% 80% at 100% 100%, #16122a 0%, rgba(10,11,18,0) 60%),
+    #0a0b12;
+
+  /* — Encres de texte — */
+  --ink-100: #FBE9C4;   /* titres, voix merveilleuse */
+  --ink-150: #e3e8ff;
+  --ink-200: #cfd4ee;
+  --ink-300: #aeb4d4;   /* corps */
+  --ink-350: #cdba8e;   /* corps ambré (sur fonds chauds) */
+  --ink-400: #8089b0;
+  --ink-450: #7c84a8;   /* étiquettes */
+  --ink-500: #6a7299;
+  --ink-600: #5a6390;
+
+  /* — Surfaces & traits — */
+  --surface-1: #10142a;   /* cartes */
+  --surface-2: #13162c;
+  --surface-3: #161b38;   /* boutons-icônes */
+  --surface-deep: #0b1024;
+  --line-1: #1b2038;
+  --line-2: #232a4d;
+  --line-3: #2a2f4a;
+  --line-4: #2a3160;
+  --line-5: #3a4068;
+
+  /* — Les cinq mondes — */
+  --w-codes: #6FB7E0;     /* Cyan Lunaire */
+  --w-nombres: #E8A14C;   /* Ambre */
+  --w-motifs: #7FC9A8;    /* Céladon */
+  --w-hasard: #E8718A;    /* Rose Aurore */
+  --w-formes: #A98BD9;    /* Améthyste */
+
+  /* — Raretés — */
+  --rare: #F5C66B;            /* or — balayage de lumière */
+  --legendaire: #C9A8F0;      /* améthyste claire — voile holographique */
+  --commune-line: #3a4a66;
+
+  /* — Typographies (auto-hébergées) — */
+  --font-display: 'Cormorant Garamond', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --font-body: 'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-hand: 'Caveat', 'Segoe Script', 'Bradley Hand', cursive;
+
+  /* — Rayons — */
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 22px;
+  --r-pill: 999px;
+
+  /* — Ombres — */
+  --shadow-card: 0 30px 60px -30px rgba(0,0,0,.7);
+  --shadow-float: 0 40px 80px -30px rgba(0,0,0,.85);
+  --shadow-or: 0 14px 30px -10px rgba(245,198,107,.6);
+  --glow-or: 0 0 26px rgba(245,198,107,.5);
+
+  /* — Dégradé du bouton d'or — */
+  --grad-or: linear-gradient(180deg, #F5C66B, #E8A14C);
+  --on-or: #3a2606;   /* texte sur l'or */
+
+  /* — Mesures d'app — */
+  --nav-h: 78px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+
+  /* couleur active du monde courant (réécrite par scope .accent-*) */
+  --accent: var(--w-nombres);
+  --accent-rgb: 232,161,76;
 }
 
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  font-family: var(--font-body);
-  color: var(--ink);
-  background: linear-gradient(165deg, var(--bg1), var(--bg2));
-  -webkit-font-smoothing: antialiased;
-}
-
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
-@keyframes blink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.15); } }
-@keyframes pulse { 0% { transform: scale(.82); opacity: .55; } 100% { transform: scale(1.55); opacity: 0; } }
-@keyframes pop { 0% { transform: scale(.6); opacity: 0; } 60% { transform: scale(1.04); } 100% { transform: scale(1); opacity: 1; } }
-@keyframes fall { to { transform: translateY(105vh) rotate(560deg); } }
-@keyframes screenIn { from { opacity: 0; transform: translateX(14px); } to { opacity: 1; transform: none; } }
-
-@media (prefers-reduced-motion: reduce) {
-  .bob, .eye, .pulse-ring, .confetti i { animation: none !important; }
-  .merveille-card.pop { animation: none; transform: none; opacity: 1; }
-  .screen { animation: none; }
-}
+/* Couleur d'accent par monde — appliquée via la classe .accent-<id> */
+.accent-codes   { --accent: var(--w-codes);   --accent-rgb: 111,183,224; }
+.accent-nombres { --accent: var(--w-nombres); --accent-rgb: 232,161,76; }
+.accent-motifs  { --accent: var(--w-motifs);  --accent-rgb: 127,201,168; }
+.accent-hasard  { --accent: var(--w-hasard);  --accent-rgb: 232,113,138; }
+.accent-formes  { --accent: var(--w-formes);  --accent-rgb: 169,139,217; }
