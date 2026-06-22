@@ -51,6 +51,31 @@ npm run icons      # regenerate PWA icons from assets-source/icon.svg (see below
 `npm run dev` is the single command to start developing. The service worker is disabled
 in dev (so there's no caching to fight); it's active in `build`/`preview` and in production.
 
+## Deploy with Docker (Coolify / any host)
+
+The repo ships a multi-stage `Dockerfile` (Node build → nginx serve) and `nginx.conf`,
+so the same image runs anywhere on port 80:
+
+```bash
+docker build -t eureka .
+docker run --rm -p 8080:80 eureka   # → http://localhost:8080
+```
+
+nginx serves `dist/` with an SPA `try_files` fallback, long-caches the hashed `/assets`
+(`Cache-Control: immutable`), and sends `no-cache` for `index.html`, the service worker
+(`sw.js` / `registerSW.js` / `workbox-*.js`) and the web manifest so PWA updates always
+propagate. The manifest is served as `application/manifest+json`.
+
+**Live deployment (Coolify):** deployed at **https://eureka.qalame.xyz** as a Dockerfile
+build pack → container port 80, with HTTPS via Let's Encrypt. **Auto-deploy is on:** a
+push to `main` fires a GitHub webhook that triggers a Coolify rebuild. So to redeploy:
+
+```bash
+git push origin main      # Coolify rebuilds & redeploys automatically
+```
+
+A manual redeploy is also available from the Coolify dashboard (Application → Deploy).
+
 ## Deploy as a static site
 
 The build output in `dist/` is fully static — host it anywhere.
