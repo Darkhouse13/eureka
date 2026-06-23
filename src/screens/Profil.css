@@ -50,7 +50,11 @@
   padding: 13px 15px; margin-bottom: 8px; cursor: pointer; min-height: 56px;
 }
 .pf-row-static, .pf-name-edit { cursor: default; }
-.pf-row-sub { margin-left: 16px; background: rgba(16,20,42,.6); }
+/* Sous-réglage (gouverné par l'interrupteur maître) : MÊME bord gauche et MÊME
+   largeur que la ligne mère — pas d'indentation. Le lien se lit via un léger
+   accent doré à gauche (à l'intérieur de la boîte, box-sizing border-box → bord
+   gauche et largeur inchangés) + la teinte + l'état désactivé quand le maître est off. */
+.pf-row-sub { background: rgba(16,20,42,.6); border-left: 2px solid rgba(245,198,107,.4); }
 .pf-row-sub.is-disabled { opacity: .5; cursor: default; }
 .pf-row-body { flex: 1; min-width: 0; }
 .pf-row-k { display: block; font-size: 15px; color: var(--ink-150); font-weight: 600; }
