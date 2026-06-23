@@ -2,6 +2,7 @@ import { useApp } from '../state/AppContext.jsx'
 import { Starfield, Etoile } from '../components/Sparkle.jsx'
 import { FennecFace } from '../components/Fennec.jsx'
 import WorldNode from '../components/WorldNode.jsx'
+import { progressionOrder } from './mapOrder.js'
 import './MapScreen.css'
 
 // L'accueil · la carte des mondes — le cœur de l'app. Revenir doit faire du bien.
@@ -15,8 +16,12 @@ import './MapScreen.css'
 //
 // Les positions sont des LISTES ORDONNÉES par ordre de LECTURE : l'index 0 est le
 // premier point que l'œil atteint (le plus haut en pile, l'entrée gauche en
-// panorama), puis on descend / on file vers la droite. Les jeux de coordonnées
-// sont réglés pour REMPLIR le panneau dans chaque disposition.
+// panorama), puis on descend / on file vers la droite. Les mondes y sont posés
+// dans l'ordre de PROGRESSION (cf. mapOrder.js) — position 1..5 = progression
+// 1..5 — et non par un appariement figé monde→coordonnée (qui supposait « codes »
+// en tête). On garde les jeux de coordonnées déjà réglés (ils remplissent le
+// panneau) ; seul l'APPARIEMENT monde→position suit désormais la progression, si
+// bien que le monde à commencer mène toujours et les « bientôt » ferment la file.
 
 // Pile verticale (téléphone + tablette portrait) — du haut (y≈13) vers le bas (y≈88).
 const STACK_POS = [[56, 13], [26, 32], [64, 51], [30, 70], [60, 88]]
@@ -77,13 +82,15 @@ function Banner({ tonight, onOpenLoop }) {
 export default function MapScreen({ layout = 'phone', onOpenWorld, onOpenLoop, onMenu }) {
   const { greetName, fennecStage, worldsView, tonight } = useApp()
   const cfg = LAYOUT[layout] || LAYOUT.phone
-  // On pose les mondes sur les positions dans l'ordre du registre (worldsView) :
-  // la i-ᵉ position (en ordre de lecture) reçoit le i-ᵉ monde.
+  // On pose les mondes sur les positions DANS L'ORDRE DE PROGRESSION : la i-ᵉ
+  // position (déjà en ordre de lecture) reçoit le i-ᵉ monde de la file — l'actif
+  // d'abord, les « bientôt » en queue. Le monde à commencer occupe donc l'index 0.
+  const ordered = progressionOrder(worldsView)
   const posOf = {}
-  worldsView.forEach((entry, i) => { posOf[entry.world.id] = cfg.pos[i] || [50, 50] })
+  ordered.forEach((entry, i) => { posOf[entry.world.id] = cfg.pos[i] || [50, 50] })
   // Le trait relie les positions DANS LEUR ORDRE (= l'ordre de lecture) : jamais
-  // de lignes croisées.
-  const pathD = smoothPath(cfg.pos.slice(0, worldsView.length))
+  // de lignes croisées, quel que soit le monde posé à chaque position.
+  const pathD = smoothPath(cfg.pos.slice(0, ordered.length))
 
   return (
     <section className="screen map accent-nombres" aria-label="La carte des mondes">
