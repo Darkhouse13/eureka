@@ -85,8 +85,11 @@
   text-align: left;
 }
 .wc.accent-nombres .wc-back { background: linear-gradient(165deg,#2a2412,#16142e 60%,#100f24); border-color:#6a5524; }
+.wc.accent-codes   .wc-back { background: linear-gradient(165deg,#15233a,#11182e 60%,#0d1326); border-color:#3a4a66; }
 .wc-back-lead { font-size: 20px; color: var(--w-motifs); }
 .wc.accent-nombres .wc-back-lead { color: var(--ambre); }
+.wc.accent-codes   .wc-back-lead { color: var(--w-codes); }
+.wc.accent-codes   .wc-back .wc-foot { border-top-color: rgba(111,183,224,.28); }
 .wc-back-title { font-family: var(--font-display); font-size: 24px; color: var(--ink-100); line-height: 1.05; margin-top: 6px; }
 .wc-back-text { font-size: 13px; color: #c6d2e6; line-height: 1.55; margin: 12px 0 0; }
 .wc-back .wc-foot { margin-top: auto; border-top-color: rgba(127,201,168,.25); }

@@ -29,10 +29,13 @@
 // deviendront les barreaux des mondes « bientôt ».
 
 import nombres from './nombres/index.jsx'
-import { codes, motifs, hasard, formes } from './stubs.js'
+import codes from './codes/index.jsx'
+import { motifs, hasard, formes } from './stubs.js'
 
-// Ordre d'affichage sur la carte. « Les nombres sans fin » d'abord : c'est le
-// monde ouvert et complet de cette passe ; les autres suivent, « bientôt ».
+// Ordre d'affichage sur la carte (ordre narratif du registre). « Les nombres sans
+// fin » d'abord — il reste le nœud d'entrée (index 0) ; « Les codes secrets » suit,
+// désormais OUVERT ; les trois autres ferment la marche, « bientôt ». L'ordre RÉEL
+// sur la carte est ensuite trié par progression (cf. screens/mapOrder.js).
 export const WORLDS = [nombres, codes, motifs, hasard, formes]
 
 export const getWorld = (id) => WORLDS.find((w) => w.id === id)

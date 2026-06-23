@@ -1,17 +1,6 @@
-// Les quatre autres mondes — enregistrés avec leur couleur et leur icône, mais
-// « bientôt » : leur échelle de défis et leurs cartes seront conçues plus tard.
-// (Leurs mini-jeux existent déjà dans le dépôt — César, symétrie, dés, Möbius,
-//  zoom de l'infini — et seront réutilisés comme barreaux dans une prochaine passe.)
-
-export const codes = {
-  id: 'codes',
-  name: 'Les codes secrets',
-  shortName: ['Les codes', 'secrets'],
-  numero: '01',
-  tagline: 'Écrire des messages que seuls les initiés peuvent lire.',
-  status: 'bientot',
-  challenges: [],
-}
+// Les trois mondes encore « bientôt » — enregistrés avec leur identité, mais leur
+// échelle de défis et leurs cartes seront conçues plus tard. (« Les codes secrets »
+// a quitté ce fichier : il est désormais bâti de bout en bout dans ./codes/index.jsx.)
 
 export const motifs = {
   id: 'motifs',
