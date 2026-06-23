@@ -39,21 +39,33 @@
 .map-calm-text { font-size: 13px; color: var(--ink-300); line-height: 1.5; margin: 8px 0 0; }
 .map-calm-soft { color: var(--w-motifs); }
 
-/* —— Toile de la carte —— */
-.map-canvas { position: relative; flex: 1; min-height: 620px; margin-top: 14px; padding-bottom: calc(var(--nav-h) + 24px); }
-.map-path { position: absolute; inset: 0; width: 100%; height: 100%; }
-
-/* —— Nœud-monde —— */
-.wnode { position: absolute; display: flex; flex-direction: column; align-items: center; }
-.wnode-new {
-  position: absolute; top: -14px; z-index: 5;
-  background: var(--or); color: var(--on-or);
-  font-size: 10px; font-weight: 800; letter-spacing: .04em;
-  padding: 3px 9px; border-radius: var(--r-pill);
-  box-shadow: 0 4px 10px rgba(245,198,107,.5);
+/* —— Toile de la carte (constellation contenue) —— */
+.map-canvas {
+  position: relative; flex: 1; min-height: 620px; margin-top: 14px;
+  padding-bottom: calc(var(--nav-h) + 24px);
 }
+/* Le trait pointillé : tracé orbe-à-orbe, dessiné en non-scaling-stroke pour que
+   les points restent de fins ronds réguliers à toute taille (jamais de tirets
+   étirés). Apparition « dash » au montage, puis statique. */
+.map-path {
+  position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible;
+  z-index: 0; pointer-events: none;
+}
+.map-path path {
+  opacity: .5;
+  animation: pathdraw 1.1s ease-out both;
+}
+@keyframes pathdraw {
+  from { stroke-dashoffset: 40; opacity: 0; }
+  to   { stroke-dashoffset: 0;  opacity: .5; }
+}
+
+/* —— Nœud-monde : ancré par le CENTRE de l'orbe à (left %, top %) —— */
+.wnode { position: absolute; z-index: 1; }
+.wnode-orb-wrap { position: absolute; left: 0; top: 0; transform: translate(-50%, -50%); }
 .wnode-orb {
-  position: relative; border-radius: 50%; border: none; cursor: pointer; padding: 0;
+  position: relative; width: var(--d); height: var(--d);
+  border-radius: 50%; border: none; cursor: pointer; padding: 0;
   display: flex; align-items: center; justify-content: center;
 }
 .wnode-orb:active { transform: scale(.97); }
@@ -66,27 +78,52 @@
   position: absolute; inset: 0; border-radius: 50%;
   background: rgba(8,11,31,.45); display: flex; align-items: center; justify-content: center;
 }
-.wnode-name {
-  margin-top: 9px; font-size: 12.5px; color: var(--ink-150); text-align: center;
-  font-weight: 600; line-height: 1.1;
+/* pastille NOUVEAU — au-dessus de l'orbe, centrée */
+.wnode-new {
+  position: absolute; left: 0; bottom: calc(var(--d) / 2 + 4px); transform: translateX(-50%);
+  z-index: 5; white-space: nowrap;
+  background: var(--or); color: var(--on-or);
+  font-size: 10px; font-weight: 800; letter-spacing: .04em;
+  padding: 3px 9px; border-radius: var(--r-pill);
+  box-shadow: 0 4px 10px rgba(245,198,107,.5);
 }
-.wnode-status { font-size: 11px; margin-top: 2px; }
+/* libellé — sous l'orbe, centré */
+.wnode-label {
+  position: absolute; left: 0; top: calc(var(--d) / 2 + 8px); transform: translateX(-50%);
+  width: max-content; max-width: 150px; text-align: center;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+}
+/* libellé AU-DESSUS de l'orbe — pour les orbes proches du bas du panneau, afin
+   que le libellé (nom + statut) ne soit pas rogné par le bord de la carte. */
+.wnode-label.is-above { top: auto; bottom: calc(var(--d) / 2 + 8px); }
+.wnode-name { font-size: 12.5px; color: var(--ink-150); font-weight: 600; line-height: 1.1; }
+.wnode-status { font-size: 11px; }
 
-/* —— Tablette paysage : panneau du soir + carte panoramique —— */
-@media (min-width: 900px) and (orientation: landscape) {
-  .map-layout { flex-direction: row; }
-  .map-rail {
-    width: 330px; flex: none; padding: 36px 28px;
-    border-right: 1px solid rgba(255,255,255,.06); background: rgba(8,11,31,.35);
-    display: flex; flex-direction: column;
-  }
-  .map-canvas { flex: 1; min-height: 0; margin-top: 0; }
-  .map-header { flex-wrap: wrap; }
-}
+/* ============================================================================
+   Disposition choisie par la largeur de la SCÈNE (data-layout posé par JS),
+   jamais par l'orientation. Téléphone (défaut) → tablette portrait → paysage.
+   ============================================================================ */
 
-/* Tablette portrait — la carte s'ouvre */
-@media (min-width: 760px) and (orientation: portrait) {
-  .map-rail { padding-left: 40px; padding-right: 40px; }
-  .map-hello-name { font-size: 30px; }
-  .map-canvas { min-height: 680px; }
+/* Tablette portrait — la carte s'ouvre, orbes plus grandes. */
+.app[data-layout="portrait"] .map-rail { padding-left: 40px; padding-right: 40px; }
+.app[data-layout="portrait"] .map-hello-name { font-size: 30px; }
+.app[data-layout="portrait"] .map-canvas { min-height: 680px; }
+.app[data-layout="portrait"] .wnode-name { font-size: 15px; }
+.app[data-layout="portrait"] .wnode-status { font-size: 12px; }
+
+/* Paysage / bureau / ultralarge — panneau du soir à gauche + carte panoramique
+   contenue à droite. La scène est déjà bornée et centrée par .app[data-layout=wide]. */
+.app[data-layout="wide"] .map-layout { flex-direction: row; height: 100%; min-height: 0; }
+.app[data-layout="wide"] .map-rail {
+  width: 320px; flex: none; padding: 36px 30px;
+  border-right: 1px solid rgba(255,255,255,.06); background: rgba(8,11,31,.35);
+  display: flex; flex-direction: column;
 }
+.app[data-layout="wide"] .map-header { flex-wrap: wrap; }
+.app[data-layout="wide"] .map-hello { flex-basis: 100%; order: 3; margin-top: 6px; }
+.app[data-layout="wide"] .map-hello-name { font-size: 23px; line-height: 1.12; }
+.app[data-layout="wide"] .map-canvas {
+  flex: 1; min-height: 0; margin-top: 0; padding-bottom: 0;
+}
+.app[data-layout="wide"] .wnode-name { font-size: 14px; }
+.app[data-layout="wide"] .wnode-status { font-size: 12px; }
