@@ -21,3 +21,14 @@
   .bottomnav { gap: 80px; justify-content: center; }
   .navtab { font-size: 12px; }
 }
+
+/* Grand format : la nav passe DANS LE FLUX (barre basse compacte) au lieu de
+   surplomber le contenu en absolu. Ainsi la carte (et les autres écrans) occupent
+   toute la hauteur de carte AU-DESSUS de la nav — aucun chevauchement, et la
+   constellation peut s'étendre jusqu'au bas du panneau sans passer sous la nav. */
+.app[data-layout="wide"] .bottomnav {
+  position: relative; flex: none;
+  height: 60px; padding: 0 24px;
+  background: rgba(8,11,31,.55);
+  border-top: 1px solid rgba(255,255,255,.06);
+}

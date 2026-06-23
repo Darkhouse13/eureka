@@ -54,6 +54,5 @@
 @media (min-width: 760px) {
   .coll-grid { grid-template-columns: repeat(5, 1fr); gap: 14px; }
 }
-@media (min-width: 900px) and (orientation: landscape) {
-  .coll-grid { grid-template-columns: repeat(6, 1fr); }
-}
+/* Grand format — piloté par la largeur de la scène (data-layout), pas l'orientation. */
+.app[data-layout="wide"] .coll-grid { grid-template-columns: repeat(6, 1fr); }

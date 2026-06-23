@@ -20,13 +20,13 @@
 .welcome-form { margin-top: auto; padding-top: 26px; }
 .welcome-chips { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin: 14px 0 16px; }
 
-/* Tablette paysage — la scène respire, deux colonnes */
-@media (min-width: 900px) and (orientation: landscape) {
-  .welcome-grid { flex-direction: row; align-items: center; gap: 50px; max-width: 980px; }
-  .welcome-fox { flex: none; }
-  .welcome-body { flex: 1; }
-  .welcome-lead, .welcome-greeting { text-align: left; }
-  .welcome-greeting { font-size: 42px; }
-  .welcome-form { margin-top: 24px; }
-  .welcome-chips { justify-content: flex-start; }
-}
+/* Grand format (paysage / bureau) — la scène respire, deux colonnes.
+   Piloté par la largeur de la scène (data-layout), pas par l'orientation. */
+.app[data-layout="wide"] .welcome-grid { flex-direction: row; align-items: center; gap: 50px; max-width: 980px; }
+.app[data-layout="wide"] .welcome-fox { flex: none; }
+.app[data-layout="wide"] .welcome-body { flex: 1; }
+.app[data-layout="wide"] .welcome-lead,
+.app[data-layout="wide"] .welcome-greeting { text-align: left; }
+.app[data-layout="wide"] .welcome-greeting { font-size: 42px; }
+.app[data-layout="wide"] .welcome-form { margin-top: 24px; }
+.app[data-layout="wide"] .welcome-chips { justify-content: flex-start; }
