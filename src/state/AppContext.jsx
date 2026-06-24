@@ -8,16 +8,13 @@ import { DEFAULT_STATE, loadState, saveState } from '../lib/storage.js'
 import { WORLDS, getWorld, realChallenges } from '../worlds/index.js'
 import { allCards } from '../cards/registry.jsx'
 import { sound } from '../audio/sound.js'
+import { fennecStageFor, STAGE_LABEL } from '../components/fennecStages.js'
+
+// Stade de croissance du fennec : voir components/fennecStages.js (la table,
+// source unique). Réexporté ici pour les anciens points d'import.
+export { fennecStageFor }
 
 const AppContext = createContext(null)
-
-// Stade de croissance du fennec selon le nombre de cartes (additif, jamais punitif).
-export function fennecStageFor(count) {
-  if (count >= 30) return 'gardien'
-  if (count >= 3) return 'complice'
-  return 'ne'
-}
-const STAGE_LABEL = { ne: 'nouveau-né', complice: 'complice', gardien: 'gardien des merveilles' }
 
 export function AppProvider({ children }) {
   const [data, setData] = useState(() => loadState() ?? DEFAULT_STATE)

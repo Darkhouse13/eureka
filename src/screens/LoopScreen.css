@@ -3,6 +3,7 @@
 .loop.b-idee       { background: radial-gradient(120% 80% at 50% 20%, #16223c, #0E1430 60%, #080B1F); }
 .loop.b-jeu        { background: radial-gradient(120% 80% at 50% 18%, #2a2412, #14142a 55%, #0a0b16); }
 .loop.b-decouverte { background: radial-gradient(120% 80% at 50% 24%, #2a1f44, #14122a 58%, #0a0b16); }
+.loop.b-grandit    { background: radial-gradient(120% 80% at 50% 26%, #2c2410, #181530 58%, #0a0b16); }
 
 /* —— Barre du haut —— */
 .loop-top {
@@ -69,3 +70,19 @@
 .beat-disc-title { font-size: 30px; line-height: 1.1; margin-top: 8px; max-width: 460px; }
 .beat-disc-text { font-size: 14px; color: var(--ink-350); line-height: 1.5; margin: 12px 0 0; max-width: 460px; }
 .beat-card { margin-top: 22px; }
+
+/* grandir — « ton guide grandit » (temps bonus, doux, jamais bloquant) */
+.beat-grandit { align-items: center; text-align: center; min-height: 70vh; justify-content: center; }
+.grandit-fox { position: relative; display: inline-block; }
+/* éclat qui balaie le renard quand le nouvel ornement se révèle */
+.grandit-shimmer {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; border-radius: 50%;
+}
+.grandit-shimmer::after {
+  content: ''; position: absolute; top: -20%; left: 0; width: 36%; height: 140%;
+  background: linear-gradient(90deg, transparent, rgba(251,233,196,.55), transparent);
+  animation: shimmer 1.5s ease-out .15s 1 both;
+}
+.grandit-eyebrow { margin-top: 10px; color: var(--or); }
+.grandit-title { font-size: 30px; line-height: 1.1; margin-top: 6px; color: var(--ink-100); }
+.grandit-line { font-size: 23px; color: var(--ambre); margin-top: 10px; max-width: 360px; }

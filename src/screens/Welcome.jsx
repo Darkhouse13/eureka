@@ -12,7 +12,7 @@ const SUGGESTIONS = ['Étoile', 'Noor', 'Sirius', 'Lyra']
 const DEFAULT_NAME = 'Étoile'
 
 export default function Welcome({ onDone }) {
-  const { setGuideName } = useApp()
+  const { setGuideName, fennecStage } = useApp()
   const [name, setName] = useState('')
 
   const pick = (n) => { sound.foxCue(); setName(n) }
@@ -30,7 +30,7 @@ export default function Welcome({ onDone }) {
       <div className="welcome-grid">
         <div className="welcome-fox">
           <div className="welcome-fox-glow" aria-hidden="true" />
-          <Fennec size={172} expression="repos" sparkle animated />
+          <Fennec size={172} expression="repos" sparkle animated stage={fennecStage} />
         </div>
 
         <div className="welcome-body">
