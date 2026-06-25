@@ -1,6 +1,7 @@
 import { useApp } from '../state/AppContext.jsx'
 import { WORLD_ICONS } from '../components/WorldIcons.jsx'
 import { Etoile } from '../components/Sparkle.jsx'
+import { displayNumberOf } from './mapOrder.js'
 import './WorldScreen.css'
 
 // Le voyage d'un monde · l'échelle des défis. Une montée, pas une leçon.
@@ -42,6 +43,9 @@ export default function WorldScreen({ world, onBack, onOpenLoop }) {
   const Icon = WORLD_ICONS[world.id]
   const pct = entry.rungsTotal ? (entry.rungsDone / entry.rungsTotal) * 100 : 0
   const realCount = (world.challenges || []).filter((c) => c.kind !== 'treasure').length
+  // Numéro affiché = rang dans l'ordre de progression (la même source que la carte),
+  // jamais le champ figé du registre — voir displayNumberOf.
+  const numero = displayNumberOf(worldsView, world.id)
 
   return (
     <section className={`screen no-nav world-screen accent-${world.id}`} aria-label={world.name}>
@@ -49,7 +53,7 @@ export default function WorldScreen({ world, onBack, onOpenLoop }) {
         <button type="button" className="iconbtn" onClick={onBack} aria-label="Retour à la carte">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M15 18l-6-6 6-6" /></svg>
         </button>
-        <span className="eyebrow">Monde {world.numero} · {realCount} défis</span>
+        <span className="eyebrow">Monde {numero} · {realCount} défis</span>
       </div>
 
       <div className="ws-inner">

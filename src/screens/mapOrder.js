@@ -23,3 +23,13 @@ export function progressionOrder(view) {
     .sort((a, b) => rankOf(a.entry.status) - rankOf(b.entry.status) || a.i - b.i)
     .map((x) => x.entry)
 }
+
+// Numéro AFFICHÉ d'un monde (« Monde 01 ») — son rang 1-based dans le MÊME ordre
+// de progression qui ordonne la carte. Source unique : ainsi le monde de tête lit
+// toujours « 01 », et les numéros se réécrivent d'eux-mêmes quand un statut change
+// (le jour où « codes » mène, il devient « 01 ») — sans trou ni doublon. On ne se
+// fie donc PLUS à un champ figé : le numéro suit la position réelle, point.
+export function displayNumberOf(view, worldId) {
+  const idx = progressionOrder(view).findIndex((e) => e.world.id === worldId)
+  return idx < 0 ? null : String(idx + 1).padStart(2, '0')
+}

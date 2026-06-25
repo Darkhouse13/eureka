@@ -10,7 +10,6 @@
 //   id          string         identifiant unique (clé de progression)
 //   name        string         nom complet
 //   shortName   [string,…]     libellé sur deux lignes pour la carte
-//   numero      string         « 02 » — cosmétique, l'ordre dans l'app
 //   tagline     string         une ligne sous le titre
 //   blurb       string         présentation du monde (écran d'échelle)
 //   status      'ready'|'bientot'

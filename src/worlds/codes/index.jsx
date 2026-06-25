@@ -135,7 +135,6 @@ const codes = {
   id: 'codes',
   name: 'Les codes secrets',
   shortName: ['Les codes', 'secrets'],
-  numero: '01',
   tagline: 'La course entre ceux qui cachent et ceux qui percent.',
   blurb: "Six défis dans le grand duel entre les codes et ceux qui les brisent — de Jules César au cadenas que personne au monde ne sait ouvrir. Au bout : le seul code parfait.",
   status: 'ready',

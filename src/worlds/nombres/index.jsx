@@ -126,7 +126,6 @@ const nombres = {
   id: 'nombres',
   name: 'Les nombres sans fin',
   shortName: ['Les nombres', 'sans fin'],
-  numero: '02',
   tagline: 'Là où compter ne s’arrête jamais.',
   blurb: 'Cinq défis qui montent vers le vertige : compter sans fin, doubler, l’infini qui se touche presque. Au bout, une carte rare.',
   status: 'ready',
