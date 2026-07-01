@@ -1,0 +1,60 @@
+/* ============================================================================
+   « À ton avis… » — l'ouverture de prédiction (réutilisable sur tout défi).
+   Trois phases DANS « le jeu » : la prédiction → le bac à sable → la révélation.
+   Nuit + accent du monde (hérité de .loop.accent-<id>), Cormorant pour la
+   question, Hanken pour les choix. Cibles ≥ 44px, vrais <button>, focus visible
+   (règle globale :focus-visible). Aucun score : un engagement, jamais un test.
+   ============================================================================ */
+
+/* — phase 1 : la prédiction — */
+.beat-predict { align-items: stretch; padding-top: 22px; }
+.predict-lead { font-size: 22px; color: var(--ambre); text-align: center; }
+.predict-q {
+  font-size: 27px; line-height: 1.18; text-align: center;
+  margin: 8px auto 2px; max-width: 470px; color: var(--ink-100);
+}
+.predict-opts {
+  list-style: none; margin: 26px 0 0; padding: 0;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.predict-opt {
+  display: flex; align-items: center; gap: 14px; width: 100%;
+  min-height: 60px; padding: 14px 18px; text-align: left;
+  border-radius: var(--r-md); border: 1.5px solid var(--line-5);
+  background: var(--surface-1); color: var(--ink-100);
+  font-family: var(--font-body); font-weight: 600; font-size: 17px; line-height: 1.3;
+  cursor: pointer;
+  transition: border-color .15s ease, background .15s ease, transform .12s ease;
+}
+.predict-opt:hover { border-color: var(--accent); background: rgba(var(--accent-rgb), .10); }
+.predict-opt:active { transform: translateY(1px) scale(.995); }
+/* pastille tactile — un anneau d'accent qui s'allume au survol / focus clavier */
+.predict-opt-dot {
+  flex: none; width: 20px; height: 20px; border-radius: 50%;
+  border: 2px solid var(--line-5); background: transparent;
+  transition: border-color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+.predict-opt:hover .predict-opt-dot,
+.predict-opt:focus-visible .predict-opt-dot {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), .55);
+  box-shadow: 0 0 10px rgba(var(--accent-rgb), .5);
+}
+.predict-hint {
+  margin: 20px auto 0; text-align: center; max-width: 380px;
+  font-family: var(--font-hand); font-size: 18px; color: var(--ink-400);
+}
+
+/* — phase 3 : la révélation (nomme son choix, réagit avec chaleur) — */
+.beat-reveal { align-items: center; text-align: center; }
+.predict-reveal-fox { margin-top: 6px; }
+.predict-reveal-lead { font-size: 21px; color: var(--ambre); margin-top: 10px; }
+.predict-reveal-choice {
+  font-size: 27px; line-height: 1.12; margin-top: 4px;
+  color: var(--ink-100); font-style: italic; max-width: 460px;
+}
+.predict-reveal-text {
+  font-size: 16px; line-height: 1.55; color: var(--ink-300);
+  margin: 16px auto 0; max-width: 460px;
+}
+.predict-reveal-next { margin-top: 24px; max-width: 340px; }

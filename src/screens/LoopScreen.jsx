@@ -3,6 +3,7 @@ import { useApp } from '../state/AppContext.jsx'
 import { Starfield, Etoile } from '../components/Sparkle.jsx'
 import { Fennec } from '../components/Fennec.jsx'
 import { WonderCard } from '../components/WonderCard.jsx'
+import PredictionFlow from '../components/Prediction.jsx'
 import { WORLD_ICONS } from '../components/WorldIcons.jsx'
 import { getCard } from '../cards/registry.jsx'
 import { fennecStageFor, STAGE_LABEL, GROWTH_LINE } from '../components/fennecStages.js'
@@ -119,13 +120,19 @@ export default function LoopScreen({ world, challenge, onExit, onFinish }) {
           </div>
         )}
 
-        {/* — Temps 3 : le jeu — */}
+        {/* — Temps 3 : le jeu — un défi peut s'ouvrir sur une PRÉDICTION (« à ton
+             avis… ») : dans ce cas, PredictionFlow orchestre prédiction → bac à
+             sable → révélation autour du même jeu, sinon le jeu se joue seul. */}
         {beat === BEAT.JEU && Game && (
-          <div className="beat beat-jeu m-rise">
-            <div className="hand beat-lead amber">à toi de jouer</div>
-            <div className="display beat-jeu-title">{challenge.title}</div>
-            <Game onSolve={complete} />
-          </div>
+          challenge.predict ? (
+            <PredictionFlow predict={challenge.predict} Game={Game} title={challenge.title} onSolve={complete} fennecStage={fennecStage} />
+          ) : (
+            <div className="beat beat-jeu m-rise">
+              <div className="hand beat-lead amber">à toi de jouer</div>
+              <div className="display beat-jeu-title">{challenge.title}</div>
+              <Game onSolve={complete} />
+            </div>
+          )
         )}
 
         {/* — Temps 4 : la découverte (célébration « Eurêka ! ») — */}

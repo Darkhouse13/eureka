@@ -41,8 +41,18 @@ const challenges = [
     },
     idee: {
       lead: 'l’idée, tout simplement',
-      title: 'Quel que soit le nombre, on peut toujours en écrire un plus grand.',
-      text: 'Il suffit d’ajouter un zéro — ou simplement +1. Il n’y a pas de dernier nombre.',
+      title: 'Un outil tout simple : ×1000 à chaque tape.',
+      text: 'Tu ajoutes trois zéros d’un coup — mille fois plus grand. Encore, et encore. Regarde jusqu’où tu peux monter.',
+    },
+    predict: {
+      question: 'Existe-t-il un plus grand nombre de tous — un nombre qu’on ne pourra plus jamais dépasser ?',
+      options: [
+        { id: 'oui', label: 'Oui, forcément' },
+        { id: 'non', label: 'Non, jamais' },
+      ],
+      correctId: 'non',
+      revealRight: 'Bien vu ! Quel que soit ton nombre, on peut toujours faire plus grand. Il n’y a pas de dernier nombre.',
+      revealWrong: 'C’est ce que presque tout le monde imagine ! Mais regarde : quel que soit le nombre, on peut toujours faire plus grand. Il n’existe pas de plus grand nombre.',
     },
     Game: PlusGrand,
     decouverte: {
@@ -64,6 +74,18 @@ const challenges = [
       Demo: DoubleDemo,
       text: 'Chaque pas vaut tous les précédents réunis, plus un. La somme grimpe à une vitesse vertigineuse.',
     },
+    predict: {
+      question: 'On pose 1 grain sur la 1ʳᵉ case, 2 sur la 2ᵉ, 4 sur la 3ᵉ… en doublant jusqu’à la 64ᵉ case. Au total, ça fait assez de grains pour remplir quoi ?',
+      options: [
+        { id: 'sac', label: 'Un grand sac' },
+        { id: 'piece', label: 'Une pièce' },
+        { id: 'pays', label: 'Un pays entier' },
+        { id: 'terre', label: 'Plus que la Terre entière peut en produire' },
+      ],
+      correctId: 'terre',
+      revealRight: 'Tu l’avais senti ! Sur la dernière case seule, plus de grains que sur toutes les précédentes réunies — et au total, plus que toute la Terre n’en a jamais fait pousser.',
+      revealWrong: 'Surprise ! Ça commence par un seul grain… mais doubler, encore et encore, devient gigantesque. Au total : plus de grains que toute la Terre n’en a jamais produit.',
+    },
     Game: GrainBle,
     decouverte: {
       lead: 'tu as découvert…',
@@ -82,7 +104,18 @@ const challenges = [
       lead: 'l’idée, tout simplement',
       title: 'La moitié, puis la moitié de la moitié… à l’infini.',
       Demo: HalvesDemo,
-      text: 'Additionne-les toutes : tu t’approches de 1 sans jamais le dépasser.',
+      text: 'Additionne-les toutes, l’une après l’autre : la barre du chemin se remplit, de moitié en moitié.',
+    },
+    predict: {
+      question: 'La puce saute à chaque fois la moitié du chemin qu’il lui reste jusqu’à la fleur. En sautant ainsi, encore et encore… va-t-elle atteindre la fleur ?',
+      options: [
+        { id: 'oui', label: 'Oui, elle finira par y arriver' },
+        { id: 'non', label: 'Non, jamais tout à fait' },
+        { id: 'milieu', label: 'Elle s’arrêtera au milieu' },
+      ],
+      correctId: 'non',
+      revealRight: 'Exactement. Elle s’approche, encore et encore… mais il reste toujours une moitié de ce qui reste. Jamais tout à fait arrivée.',
+      revealWrong: 'Regarde bien : elle s’approche si près qu’on dirait qu’elle touche… mais il reste toujours une moitié d’une moitié. Une infinité de sauts, et jamais tout à fait la fleur.',
     },
     Game: SautPuce,
     decouverte: {
@@ -96,12 +129,22 @@ const challenges = [
     id: 'hotel-hilbert', index: 4, title: 'L’hôtel toujours complet', kind: 'challenge',
     etincelle: {
       lead: 'imagine…',
-      text: 'Un hôtel a une infinité de chambres, toutes occupées. Un voyageur arrive tard dans la nuit. « Désolé, c’est complet » ? Pas du tout.',
+      text: 'Un hôtel a une infinité de chambres, toutes occupées. Un voyageur arrive tard dans la nuit. « Désolé, c’est complet »… ou peut-être pas ?',
     },
     idee: {
       lead: 'l’idée, tout simplement',
-      title: 'Chacun passe à la chambre suivante : 1→2, 2→3, 3→4…',
-      text: 'La chambre 1 se libère. Avec l’infini, il reste toujours de la place — même pour un car entier de voyageurs.',
+      title: 'Une infinité de chambres — chacune a une suivante.',
+      text: 'Elles sont numérotées 1, 2, 3… sans fin, toutes occupées. Mais après chaque chambre, il y en a toujours une autre. Garde ça en tête.',
+    },
+    predict: {
+      question: 'L’hôtel a une infinité de chambres — et elles sont TOUTES occupées. Un nouveau voyageur arrive. Peut-on lui trouver une chambre ?',
+      options: [
+        { id: 'non', label: 'Non, c’est complet' },
+        { id: 'oui', label: 'Oui, on peut faire de la place' },
+      ],
+      correctId: 'oui',
+      revealRight: 'Bravo ! Chacun avance d’une chambre : la 1 → 2, la 2 → 3… et la chambre 1 se libère. Complet, et pourtant de la place !',
+      revealWrong: 'C’est ce qu’on croit tous — mais regarde : chacun avance d’une chambre, la 1 → 2, la 2 → 3… et la chambre 1 se libère pour le nouveau. Avec l’infini, « complet » ne veut plus dire « plus de place » !',
     },
     Game: HotelHilbert,
     decouverte: {
