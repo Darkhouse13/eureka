@@ -1,15 +1,7 @@
-// Les trois mondes encore « bientôt » — enregistrés avec leur identité, mais leur
+// Les deux mondes encore « bientôt » — enregistrés avec leur identité, mais leur
 // échelle de défis et leurs cartes seront conçues plus tard. (« Les codes secrets »
-// a quitté ce fichier : il est désormais bâti de bout en bout dans ./codes/index.jsx.)
-
-export const motifs = {
-  id: 'motifs',
-  name: 'Le monde des motifs',
-  shortName: ['Le monde', 'des motifs'],
-  tagline: 'La symétrie, les pavages, la beauté qui se répète.',
-  status: 'bientot',
-  challenges: [],
-}
+// et « Le monde des motifs » ont quitté ce fichier : ils sont désormais bâtis de
+// bout en bout dans ./codes/index.jsx et ./motifs/index.jsx.)
 
 export const hasard = {
   id: 'hasard',

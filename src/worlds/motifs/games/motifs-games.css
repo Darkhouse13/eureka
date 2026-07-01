@@ -1,0 +1,132 @@
+/* « Le monde des motifs » — habillage nuit des cinq jeux. Tout est scopé sous .mg*
+   (aucune fuite hors du monde). On réutilise les primitives globales (.btn-or,
+   .btn-soft, .chip, .eyebrow, .display, .bar, .m-rise…). Encre & or + céladon. */
+
+.mg { display: flex; flex-direction: column; gap: 16px; }
+
+/* — Bulle du fennec — */
+.mg-fox {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--surface-1); border: 1px solid var(--line-3); border-radius: var(--r-md);
+  padding: 12px 14px; font-size: 14px; color: var(--ink-200); line-height: 1.5;
+}
+.mg-fox .fennec { flex: none; }
+
+/* — Plan de travail (grille / disque / mur) — */
+.mg-board {
+  background: rgba(8,11,31,.4); border: 1px solid var(--line-3); border-radius: var(--r-xl);
+  padding: 16px; display: flex; justify-content: center;
+}
+.mg-canvas {
+  display: block; width: 100%; max-width: 320px; aspect-ratio: 1 / 1; margin: 0 auto;
+  touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+}
+
+/* — Indice + actions — */
+.mg-hint { text-align: center; font-size: 14px; color: var(--ink-300); min-height: 22px; margin: 0; }
+.mg-hint b { color: var(--w-motifs); }
+.mg-actions { display: flex; gap: 12px; }
+.mg-actions .btn-or, .mg-actions .btn-soft { flex: 1; }
+
+/* — Révélation (mène à la découverte) — */
+.mg-reveal {
+  text-align: center;
+  background: radial-gradient(120% 100% at 50% 0%, rgba(46,139,116,.32), rgba(20,40,32,.12));
+  border: 1px solid rgba(127,201,168,.35); border-radius: var(--r-xl); padding: 22px 18px;
+}
+.mg-reveal .etoile { margin: 0 auto; }
+.mg-reveal-title { font-size: 23px; max-width: 440px; margin: 10px auto 0; }
+
+/* ====================================================================== */
+/* Rung 1 — Le miroir (atelier de symétrie)                               */
+/* ====================================================================== */
+.mg-paints { display: flex; justify-content: center; gap: 14px; }
+.mg-swatch {
+  width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+  background: var(--swatch); border: 3px solid var(--surface-1);
+  box-shadow: 0 0 0 2px var(--line-4);
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.mg-swatch.on { box-shadow: 0 0 0 3px var(--w-motifs); transform: scale(1.08); }
+.mg-swatch:active { transform: scale(.95); }
+
+.mg-grid {
+  position: relative; display: grid;
+  grid-template-columns: repeat(var(--cols), 1fr);
+  grid-template-rows: repeat(var(--cols), 1fr);
+  gap: 4px; width: 100%; max-width: 300px; aspect-ratio: 1 / 1; margin: 0 auto;
+}
+.mg-cell {
+  border: 1px solid var(--line-4); border-radius: 7px; background: var(--surface-2);
+  padding: 0; min-width: 0; min-height: 0; cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background .18s ease, transform .12s ease;
+}
+.mg-grid:not(.is-final) .mg-cell:active { transform: scale(.9); }
+.mg-grid.is-final { pointer-events: none; }
+.mg-axis { position: absolute; background: var(--w-motifs); opacity: .5; pointer-events: none; }
+.mg-axis-v { top: -4px; bottom: -4px; left: 50%; width: 2px; transform: translateX(-50%); }
+
+/* ====================================================================== */
+/* Rung 2 — La rosace (kaléidoscope)                                      */
+/* ====================================================================== */
+.mg-folds { display: flex; justify-content: center; gap: 12px; }
+.mg-rosace { cursor: crosshair; }
+.mg-rosace-bg { fill: #0c1813; stroke: #4d7a63; stroke-width: 1.4; }
+.mg-rosace-spoke { stroke: rgba(127,201,168,.16); stroke-width: 1; }
+/* L'orientation des pétales vit dans l'attribut SVG transform="rotate(…)" ; on
+   n'anime donc QUE l'opacité (une animation CSS sur `transform` écraserait la
+   rotation et empilerait toutes les copies). */
+.mg-petal { animation: mgfade .3s ease both; }
+
+/* ====================================================================== */
+/* Rung 3 — Le pavage (zellige)                                           */
+/* ====================================================================== */
+.mg-tiles { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.mg-wall { max-width: 360px; aspect-ratio: 3 / 2; }
+.mg-trou-mark {
+  font-family: var(--font-hand); font-size: 13px; fill: #f0d6a8; opacity: .92;
+  paint-order: stroke; stroke: #241a12; stroke-width: 3px; stroke-linejoin: round;
+}
+
+/* ====================================================================== */
+/* Rung 4 — Penrose (cerf-volant & flèche)                                */
+/* ====================================================================== */
+.mg-legend { display: flex; justify-content: center; gap: 18px; font-size: 13px; color: var(--ink-300); }
+.mg-legend-item { display: inline-flex; align-items: center; gap: 7px; }
+.mg-legend-sw { width: 16px; height: 16px; border-radius: 4px; border: 1px solid #0c1813; }
+.mg-penrose { background: #0c1813; border-radius: 12px; }
+.mg-pen-tile { animation: mgfade .4s ease both; }
+
+/* ====================================================================== */
+/* Rung 5 — Le flocon de Koch                                             */
+/* ====================================================================== */
+.mg-koch { background: radial-gradient(circle at 50% 46%, #11211a, #0c1813); border-radius: 12px; }
+.mg-koch-shape { fill: rgba(127,201,168,.22); stroke: var(--w-motifs); stroke-width: 1.4; stroke-linejoin: round; }
+.mg-meters { display: flex; flex-direction: column; gap: 12px; }
+.mg-meter {
+  background: rgba(8,11,31,.4); border: 1px solid var(--line-3); border-radius: var(--r-lg);
+  padding: 12px 14px; display: flex; flex-direction: column; gap: 7px;
+}
+.mg-meter-top { display: flex; align-items: baseline; justify-content: space-between; }
+.mg-meter-lbl { font-family: var(--font-display); font-size: 18px; color: var(--ink-100); }
+.mg-meter-val { font-family: var(--font-display); font-weight: 700; font-size: 24px; color: var(--w-motifs); font-variant-numeric: tabular-nums; }
+.mg-meter-val.rising { color: var(--or); text-shadow: 0 0 14px rgba(245,198,107,.45); }
+.mg-meter-note { font-size: 12px; color: var(--ink-400); }
+.mg-bar-celadon > i { background: linear-gradient(90deg, #2E8B74, #7FC9A8); }
+
+/* — Animations (coupées en mouvement réduit) — */
+@keyframes mgfade { from { opacity: 0; } to { opacity: 1; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mg-cell, .mg-swatch { transition: none; }
+  .mg-grid:not(.is-final) .mg-cell:active, .mg-swatch:active, .mg-swatch.on { transform: none; }
+  .mg-petal, .mg-pen-tile { animation: none; }
+}
+
+/* — Grand format : les jeux respirent et restent centrés — */
+@media (min-width: 760px) {
+  .mg { max-width: 560px; margin: 0 auto; width: 100%; }
+  .mg-canvas { max-width: 360px; }
+  .mg-wall { max-width: 420px; }
+}

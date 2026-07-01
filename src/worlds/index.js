@@ -29,12 +29,14 @@
 
 import nombres from './nombres/index.jsx'
 import codes from './codes/index.jsx'
-import { motifs, hasard, formes } from './stubs.js'
+import motifs from './motifs/index.jsx'
+import { hasard, formes } from './stubs.js'
 
 // Ordre d'affichage sur la carte (ordre narratif du registre). « Les nombres sans
-// fin » d'abord — il reste le nœud d'entrée (index 0) ; « Les codes secrets » suit,
-// désormais OUVERT ; les trois autres ferment la marche, « bientôt ». L'ordre RÉEL
-// sur la carte est ensuite trié par progression (cf. screens/mapOrder.js).
+// fin » d'abord — il reste le nœud d'entrée (index 0) ; « Les codes secrets » puis
+// « Le monde des motifs » suivent, désormais OUVERTS ; les deux derniers ferment la
+// marche, « bientôt ». L'ordre RÉEL sur la carte est ensuite trié par progression
+// (cf. screens/mapOrder.js).
 export const WORLDS = [nombres, codes, motifs, hasard, formes]
 
 export const getWorld = (id) => WORLDS.find((w) => w.id === id)

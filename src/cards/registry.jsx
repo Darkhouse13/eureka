@@ -121,6 +121,105 @@ function MasqueJetableArt() {
   )
 }
 
+// — Glyphes du monde « Le monde des motifs » (céladon + touches d'or) —
+
+// #13 · La symétrie — un papillon de part et d'autre d'un axe-miroir.
+function SymetrieArt() {
+  return (
+    <svg viewBox="0 0 124 84" width="112" aria-hidden="true">
+      <line x1="62" y1="6" x2="62" y2="78" stroke="var(--or)" strokeWidth="1.4" strokeDasharray="3 4" opacity=".7" />
+      <path d="M62 44 C40 16 12 22 22 44 C12 66 42 70 62 44 Z" fill="var(--w-motifs)" opacity=".9" />
+      <path d="M62 44 C84 16 112 22 102 44 C112 66 82 70 62 44 Z" fill="var(--w-motifs)" opacity=".55" />
+      <ellipse cx="62" cy="44" rx="2.6" ry="15" fill="var(--creme-clair)" />
+      <path d="M62 30 q-5 -9 -12 -11 M62 30 q5 -9 12 -11" stroke="var(--creme-clair)" strokeWidth="1.4" fill="none" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+// #14 · La rosace — un trait répété en tournant : six pétales.
+function RosaceArt() {
+  return (
+    <svg viewBox="0 0 120 120" width="104" aria-hidden="true">
+      <g transform="translate(60 60)">
+        {Array.from({ length: 6 }, (_, k) => (
+          <g key={k} transform={`rotate(${60 * k})`}>
+            <ellipse cx="0" cy="-27" rx="8" ry="23" fill="var(--w-motifs)" opacity={k % 2 ? 0.55 : 0.9} />
+          </g>
+        ))}
+        <circle r="9" fill="var(--or)" />
+      </g>
+    </svg>
+  )
+}
+
+// #15 · Le zellige — l'étoile à huit branches (khatam), le carreau emblématique.
+function ZelligeArt() {
+  const star = (R, r, cy) => Array.from({ length: 16 }, (_, k) => {
+    const rad = k % 2 ? r : R
+    const a = (Math.PI / 180) * (22.5 * k - 90)
+    return `${(60 + rad * Math.cos(a)).toFixed(1)},${(cy + rad * Math.sin(a)).toFixed(1)}`
+  }).join(' ')
+  return (
+    <svg viewBox="0 0 120 96" width="104" aria-hidden="true">
+      <polygon points={star(34, 16, 48)} fill="var(--w-motifs)" stroke="var(--or)" strokeWidth="1.6" strokeLinejoin="round" />
+      <polygon points={star(17, 8, 48)} fill="#0c1813" opacity=".5" />
+    </svg>
+  )
+}
+
+// #16 · Penrose — le cerf-volant et la flèche, côte à côte.
+function PenroseArt() {
+  return (
+    <svg viewBox="0 0 124 80" width="112" aria-hidden="true">
+      <polygon points="40,12 60,44 40,56 20,44" fill="var(--w-motifs)" stroke="var(--or)" strokeWidth="1.4" strokeLinejoin="round" />
+      <polygon points="86,16 102,62 86,50 70,62" fill="var(--or)" stroke="var(--creme-clair)" strokeWidth="1.2" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+// #17 · Le flocon de Koch — le vrai contour, deux niveaux de détail.
+function KochArt() {
+  const C = 44
+  const R = 34
+  const base = [-90, 150, 30].map((d) => { const a = (Math.PI / 180) * d; return [C + R * Math.cos(a), C + R * Math.sin(a)] })
+  const rot = (v, d) => { const a = (Math.PI / 180) * d; return [v[0] * Math.cos(a) - v[1] * Math.sin(a), v[0] * Math.sin(a) + v[1] * Math.cos(a)] }
+  const lerp = (p, q, f) => [p[0] + (q[0] - p[0]) * f, p[1] + (q[1] - p[1]) * f]
+  const step = (pts) => {
+    const o = []
+    for (let i = 0; i < pts.length; i++) {
+      const p = pts[i]
+      const q = pts[(i + 1) % pts.length]
+      const b = lerp(p, q, 1 / 3)
+      const c = lerp(p, q, 2 / 3)
+      const r = rot([c[0] - b[0], c[1] - b[1]], -60)
+      o.push(p, b, [b[0] + r[0], b[1] + r[1]], c)
+    }
+    return o
+  }
+  let p = base
+  for (let i = 0; i < 2; i++) p = step(p)
+  const d = `M${p.map((x) => `${x[0].toFixed(1)},${x[1].toFixed(1)}`).join(' L')} Z`
+  return (
+    <svg viewBox="0 0 88 88" width="92" aria-hidden="true">
+      <path d={d} fill="rgba(127,201,168,.28)" stroke="var(--w-motifs)" strokeWidth="1.6" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+// #18 · Le pavage du paradis — l'étincelle au-dessus d'une arche mauresque.
+function AlhambraArt() {
+  return (
+    <svg viewBox="0 0 96 100" width="84" aria-hidden="true">
+      <path d="M24 92 V54 a24 24 0 0 1 48 0 V92" fill="none" stroke="var(--w-motifs)" strokeWidth="3" strokeLinejoin="round" />
+      <path d="M24 92 v-6 a4 4 0 0 1 8 0 v6 M64 92 v-6 a4 4 0 0 1 8 0 v6" fill="none" stroke="var(--w-motifs)" strokeWidth="2.4" opacity=".7" />
+      <path d="M48 8 l2.2 7 7 2.2 -7 2.2 -2.2 7 -2.2 -7 -7 -2.2 7 -2.2Z" fill="var(--or)" style={{ filter: 'drop-shadow(0 0 6px rgba(245,198,107,.6))' }} />
+      <circle cx="34" cy="46" r="1.8" fill="var(--or)" opacity=".7" />
+      <circle cx="62" cy="46" r="1.8" fill="var(--or)" opacity=".7" />
+      <circle cx="48" cy="40" r="1.8" fill="var(--or)" opacity=".7" />
+    </svg>
+  )
+}
+
 // — Le registre —
 export const CARDS = {
   'nombres-10n': {
@@ -222,6 +321,62 @@ export const CARDS = {
     back: {
       title: 'Le masque jetable',
       text: "Une clé au hasard, aussi longue que le message, utilisée une seule fois : le seul code que personne, jamais, ne pourra casser.",
+    },
+  },
+
+  // — « Le monde des motifs » (céladon) — l'œil qui voit l'ordre caché —
+  'symetrie': {
+    id: 'symetrie', worldId: 'motifs', num: '13', rarity: 'commune',
+    name: 'La symétrie', subtitle: "une moitié, le reflet de l’autre",
+    Art: SymetrieArt,
+    back: {
+      title: 'La symétrie',
+      text: "Quand une moitié est le reflet exact de l'autre. Le papillon, le flocon, ton visage : la symétrie est partout.",
+    },
+  },
+  'rosace': {
+    id: 'rosace', worldId: 'motifs', num: '14', rarity: 'commune',
+    name: 'La rosace', subtitle: 'un trait qui tourne en ornement',
+    Art: RosaceArt,
+    back: {
+      title: 'La rosace',
+      text: "Répète une forme en la faisant tourner autour d'un point, et un simple trait devient tout un ornement.",
+    },
+  },
+  'zellige': {
+    id: 'zellige', worldId: 'motifs', num: '15', rarity: 'rare',
+    name: 'Le zellige', subtitle: "un seul carreau, à l’infini",
+    Art: ZelligeArt,
+    back: {
+      title: 'Le zellige',
+      text: "Un seul carreau, choisi pour s'emboîter à l'infini sans le moindre trou. Les zelliges de tes murs sont de la haute géométrie.",
+    },
+  },
+  'penrose': {
+    id: 'penrose', worldId: 'motifs', num: '16', rarity: 'rare',
+    name: 'Penrose', subtitle: "l’ordre sans répétition",
+    Art: PenroseArt,
+    back: {
+      title: 'Penrose',
+      text: "Deux formes suffisent à couvrir l'infini sans jamais se répéter à l'identique : de l'ordre sans répétition.",
+    },
+  },
+  'koch': {
+    id: 'koch', worldId: 'motifs', num: '17', rarity: 'legendaire',
+    name: 'Le flocon de Koch', subtitle: 'un contour de longueur infinie',
+    Art: KochArt,
+    back: {
+      title: 'Le flocon de Koch',
+      text: "Un contour de longueur infinie autour d'une surface finie. Zoome : la même forme revient sans fin. C'est une fractale.",
+    },
+  },
+  'alhambra': {
+    id: 'alhambra', worldId: 'motifs', num: '18', rarity: 'legendaire', treasure: true,
+    name: 'Le pavage du paradis', subtitle: 'les 17 façons de paver un mur',
+    Art: AlhambraArt,
+    back: {
+      title: 'Le pavage du paradis',
+      text: "Il existe exactement 17 façons de répéter un motif sur un mur. L'Alhambra les contient toutes les 17.",
     },
   },
 }
