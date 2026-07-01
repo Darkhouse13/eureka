@@ -12,6 +12,12 @@ import Profil from './screens/Profil.jsx'
 import BottomNav from './components/BottomNav.jsx'
 import './styles/toast.css'
 
+// — EXPÉRIENCE ISOLÉE : « Y a-t-il des infinis plus grands que d'autres ? » —
+// Une explication tactile autonome, volontairement séparée des mondes / échelles /
+// cartes / fennec. Atteignable par ?experiment=infinis. Pour la retirer : supprimer
+// cet import et le garde-fou dans App() ci-dessous. (Rien d'autre n'en dépend.)
+import Infinis from './experiments/infinis/Infinis.jsx'
+
 // — petit toast local (un retour discret, jamais bloquant) —
 function Toast({ message }) {
   if (!message) return null
@@ -101,6 +107,11 @@ function Shell() {
 }
 
 export default function App() {
+  // Garde-fou d'expérience — totalement à l'écart de l'app (aucun état partagé).
+  if (typeof window !== 'undefined' &&
+      new URLSearchParams(window.location.search).get('experiment') === 'infinis') {
+    return <Infinis />
+  }
   return (
     <AppProvider>
       <Shell />
